@@ -17,7 +17,7 @@ namespace CmsWeb.Areas.Finance.Models.BatchImport
 {
     internal class AnchorBibleQbImporter : IContributionBatchImporter
     {
-        public int? RunImport(string text, DateTime date, int? fundid, bool fromFile)
+        public int? RunImport(string text, DateTime date, string fundid, bool fromFile)
         {
             using (var csv = new CsvReader(new StringReader(text)))
                 return BatchProcess(csv, date, fundid);
@@ -29,10 +29,10 @@ namespace CmsWeb.Areas.Finance.Models.BatchImport
             public int Pid { get; set; }
             public DateTime Dt { get; set; }
             public string Amount { get; set; }
-            public int Fund { get; set; }
+            public string Fund { get; set; }
         }
 
-        private static int? BatchProcess(CsvReader csv, DateTime date, int? fundid)
+        private static int? BatchProcess(CsvReader csv, DateTime date, string fundid)
         {
             var prevdt = DateTime.MinValue;
             BundleHeader bh = null;
@@ -52,7 +52,7 @@ namespace CmsWeb.Areas.Finance.Models.BatchImport
                     Dt = csv[1].ToDate() ?? date,
                     Amount = csv[4],
                     Pid = csv[2].ToInt(),
-                    Fund = csv[5].ToInt2() ?? fid
+                    Fund = csv[5] ?? fid
                 };
                 rows.Add(row);
             }

@@ -23,7 +23,7 @@ namespace CmsData.API
             this.Db = Db;
         }
 
-        public string PostContribution(int PeopleId, decimal Amount, int FundId, string desc, string date, int? type, string checkno)
+        public string PostContribution(int PeopleId, decimal Amount, string FundId, string desc, string date, int? type, string checkno)
         {
             try
             {
@@ -104,7 +104,7 @@ namespace CmsData.API
 
         [SuppressMessage("ReSharper", "InconsistentNaming")]
         public static IEnumerable<ContributorInfo> Contributors(CMSDataContext db,
-            DateTime fromDate, DateTime toDate, int PeopleId, int? SpouseId, int FamilyId, List<int> funds, bool noaddressok, bool useMinAmt, 
+            DateTime fromDate, DateTime toDate, int PeopleId, int? SpouseId, int FamilyId, List<string> funds, bool noaddressok, bool useMinAmt, 
             string startswith = null, string sort = null, bool singleStatement = false, int? tagid = null, bool excludeelectronic = false)
         {
             var MinAmt = db.Setting("MinContributionAmount", "5").ToDecimal();
@@ -118,7 +118,7 @@ namespace CmsData.API
                 startswith = a[0];
                 endswith = a[1];
             }
-            var q = from p in db.Donors(fromDate, toDate, PeopleId, SpouseId, FamilyId, noaddressok, tagid, funds.JoinInts(","))
+            var q = from p in db.Donors(fromDate, toDate, PeopleId, SpouseId, FamilyId, noaddressok, tagid, string.Join(",", funds))
                     select p;
 
             if (startswith.HasValue() && !endswith.HasValue())
@@ -261,55 +261,55 @@ namespace CmsData.API
             return sb.ToString();
         }
 
-        public static IEnumerable<NormalContribution> Contributions(CMSDataContext db, ContributorInfo ci, DateTime fromDate, DateTime toDate, List<int> funds)
+        public static IEnumerable<NormalContribution> Contributions(CMSDataContext db, ContributorInfo ci, DateTime fromDate, DateTime toDate, List<string> funds)
         {
             var q = from c in
-                db.NormalContributions(ci.PeopleId, ci.SpouseID, ci.Joint, fromDate, toDate, funds.JoinInts(","))
+                db.NormalContributions(ci.PeopleId, ci.SpouseID, ci.Joint, fromDate, toDate, string.Join(",", funds))
                 orderby c.ContributionDate
                 select c;
             return q;
         }
 
-        public static IEnumerable<NonTaxContribution> NonTaxItems(CMSDataContext db, ContributorInfo ci, DateTime fromDate, DateTime toDate, List<int> funds)
+        public static IEnumerable<NonTaxContribution> NonTaxItems(CMSDataContext db, ContributorInfo ci, DateTime fromDate, DateTime toDate, List<string> funds)
         {
             var q = from c in
-                db.NonTaxContributions(ci.PeopleId, ci.SpouseID, ci.Joint, fromDate, toDate, funds.JoinInts(","))
+                db.NonTaxContributions(ci.PeopleId, ci.SpouseID, ci.Joint, fromDate, toDate, string.Join(",", funds))
                 orderby c.ContributionDate
                 select c;
             return q;
         }
 
-        public static IEnumerable<StockGift> StockGifts(CMSDataContext db, ContributorInfo ci, DateTime fromDate, DateTime toDate, List<int> funds )
+        public static IEnumerable<StockGift> StockGifts(CMSDataContext db, ContributorInfo ci, DateTime fromDate, DateTime toDate, List<string> funds )
         {
             var q = from c in
-                db.StockGifts(ci.PeopleId, ci.SpouseID, ci.Joint, fromDate, toDate, funds.JoinInts(","))
+                db.StockGifts(ci.PeopleId, ci.SpouseID, ci.Joint, fromDate, toDate, string.Join(",", funds))
                 orderby c.ContributionDate
                 select c;
             return q;
         }
 
-        public static IEnumerable<UnitPledgeSummary> Pledges(CMSDataContext db, ContributorInfo ci, DateTime toDate, List<int> funds)
+        public static IEnumerable<UnitPledgeSummary> Pledges(CMSDataContext db, ContributorInfo ci, DateTime toDate, List<string> funds)
         {
             var q = from c in
-                db.UnitPledgeSummary(ci.PeopleId, ci.SpouseID, ci.Joint, toDate, funds.JoinInts(","))
+                db.UnitPledgeSummary(ci.PeopleId, ci.SpouseID, ci.Joint, toDate, string.Join(",", funds))
                 orderby c.FundName
                 select c;
             return q;
         }
 
-        public static IEnumerable<GiftSummary> GiftSummary(CMSDataContext db, ContributorInfo ci, DateTime fromDate, DateTime toDate, List<int> funds)
+        public static IEnumerable<GiftSummary> GiftSummary(CMSDataContext db, ContributorInfo ci, DateTime fromDate, DateTime toDate, List<string> funds)
         {
             var q = from c in
-                db.GiftSummary(ci.PeopleId, ci.SpouseID, ci.Joint, fromDate, toDate, funds.JoinInts(","))
+                db.GiftSummary(ci.PeopleId, ci.SpouseID, ci.Joint, fromDate, toDate, string.Join(",", funds))
                 orderby c.FundName
                 select c;
             return q;
         }
 
-        public static IEnumerable<GiftsInKind> GiftsInKind(CMSDataContext db, ContributorInfo ci, DateTime fromDate, DateTime toDate, List<int> funds)
+        public static IEnumerable<GiftsInKind> GiftsInKind(CMSDataContext db, ContributorInfo ci, DateTime fromDate, DateTime toDate, List<string> funds)
         {
             var q = from c in
-                db.GiftsInKind(ci.PeopleId, ci.SpouseID, ci.Joint, fromDate, toDate, funds.JoinInts(","))
+                db.GiftsInKind(ci.PeopleId, ci.SpouseID, ci.Joint, fromDate, toDate, string.Join(",", funds))
                 orderby c.ContributionDate
                 select c;
             return q;

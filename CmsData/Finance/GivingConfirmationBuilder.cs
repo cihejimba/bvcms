@@ -12,10 +12,10 @@ namespace CmsData.Finance
         public class FundItem
         {
             public string Desc { get; set; }
-            public int Fundid { get; set; }
+            public string Fundid { get; set; }
             public decimal Amt { get; set; }
         }
-        public static string PostAndBuild(CMSDataContext db, Person staff, Person person, string body, int orgId, IEnumerable<FundItem> fundItems, Transaction tran, string desc, int? donationFundId = null)
+        public static string PostAndBuild(CMSDataContext db, Person staff, Person person, string body, int orgId, IEnumerable<FundItem> fundItems, Transaction tran, string desc, string donationFundId = null)
         {
             var org = db.LoadOrganizationById(orgId);
             var text = body ?? "No Body";
@@ -55,7 +55,7 @@ namespace CmsData.Finance
                 OrgId = orgId,
             });
             tran.Financeonly = true;
-            if (tran.Donate > 0 && donationFundId > 0)
+            if (tran.Donate > 0 && donationFundId.HasValue())
             {
                 var fundname = db.ContributionFunds.Single(ff => ff.FundId == donationFundId).FundName;
                 if(row.HasValue())

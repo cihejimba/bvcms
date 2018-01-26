@@ -24,7 +24,7 @@ namespace CmsData
 		
 		private DateTime _CreatedDate;
 		
-		private int _FundId;
+		private string _FundId;
 		
 		private int _ContributionTypeId;
 		
@@ -92,7 +92,7 @@ namespace CmsData
 		partial void OnCreatedDateChanging(DateTime value);
 		partial void OnCreatedDateChanged();
 		
-		partial void OnFundIdChanging(int value);
+		partial void OnFundIdChanging(string value);
 		partial void OnFundIdChanged();
 		
 		partial void OnContributionTypeIdChanging(int value);
@@ -238,9 +238,9 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="FundId", UpdateCheck=UpdateCheck.Never, Storage="_FundId", DbType="int NOT NULL")]
+		[Column(Name="FundId", UpdateCheck=UpdateCheck.Never, Storage="_FundId", DbType="varchar(50) NOT NULL")]
 		[IsForeignKey]
-		public int FundId
+		public string FundId
 		{
 			get { return this._FundId; }
 
@@ -724,7 +724,7 @@ namespace CmsData
 					else
 					{
 						
-						this._FundId = default(int);
+						this._FundId = default(string);
 						
 					}
 

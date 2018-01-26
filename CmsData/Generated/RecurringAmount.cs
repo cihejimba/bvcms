@@ -20,7 +20,7 @@ namespace CmsData
 		
 		private int _PeopleId;
 		
-		private int _FundId;
+		private string _FundId;
 		
 		private decimal? _Amt;
 		
@@ -40,7 +40,7 @@ namespace CmsData
 		partial void OnPeopleIdChanging(int value);
 		partial void OnPeopleIdChanged();
 		
-		partial void OnFundIdChanging(int value);
+		partial void OnFundIdChanging(string value);
 		partial void OnFundIdChanged();
 		
 		partial void OnAmtChanging(decimal? value);
@@ -87,9 +87,9 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="FundId", UpdateCheck=UpdateCheck.Never, Storage="_FundId", DbType="int NOT NULL", IsPrimaryKey=true)]
+		[Column(Name="FundId", UpdateCheck=UpdateCheck.Never, Storage="_FundId", DbType="varchar(50) NOT NULL", IsPrimaryKey=true)]
 		[IsForeignKey]
-		public int FundId
+		public string FundId
 		{
 			get { return this._FundId; }
 
@@ -173,7 +173,7 @@ namespace CmsData
 					else
 					{
 						
-						this._FundId = default(int);
+						this._FundId = default(string);
 						
 					}
 

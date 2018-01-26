@@ -194,22 +194,22 @@ namespace CmsWeb.Models
             );
         }
 
-        public string BundleTotalsUrl(int? fundid = null, int? bundletypeid = null)
+        public string BundleTotalsUrl(string fundid = null, int? bundletypeid = null)
         {
             return BuildUrl("/BundleTotals", fundid, bundletypeid);
         }
 
-        public string ContributionsUrl(int? fundid = null, int? bundletypeid = null)
+        public string ContributionsUrl(string fundid = null, int? bundletypeid = null)
         {
             return BuildUrl("/Contributions", fundid, bundletypeid);
         }
         private string connector;
-        private string BuildUrl(string baseurl, int? fundid, int? bundletypeid)
+        private string BuildUrl(string baseurl, string fundid, int? bundletypeid)
         {
             connector = "?";
             var sb = new StringBuilder(baseurl);
 
-            if (fundid.HasValue)
+            if (fundid.HasValue())
                 Append(sb, "fundid=" + fundid);
             if (bundletypeid.HasValue)
                 Append(sb, "bundletype=" + bundletypeid);

@@ -15,7 +15,7 @@ namespace CmsWeb.Areas.Finance.Models.BatchImport
 {
     internal class BatchImportContributions
     {
-        public static int? BatchProcess(string text, DateTime date, int? fundid, bool fromFile)
+        public static int? BatchProcess(string text, DateTime date, string fundid, bool fromFile)
         {
             var importer = FindMatchingImporter(text, fromFile);
 
@@ -36,7 +36,7 @@ namespace CmsWeb.Areas.Finance.Models.BatchImport
                 ContributionDate = date,
                 CreatedBy = Util.UserId,
                 CreatedDate = now,
-                FundId = DbUtil.Db.Setting("DefaultFundId", "1").ToInt()
+                FundId = DbUtil.Db.Setting("DefaultFundId", "1")
             };
             DbUtil.Db.BundleHeaders.InsertOnSubmit(bh);
             bh.BundleHeaderTypeId = btid ?? BundleTypeCode.ChecksAndCash;
@@ -51,7 +51,7 @@ namespace CmsWeb.Areas.Finance.Models.BatchImport
             DbUtil.Db.SubmitChanges();
         }
 
-        public static int FirstFundId()
+        public static string FirstFundId()
         {
             var firstfund = (from f in DbUtil.Db.ContributionFunds
                              where f.FundStatusId == 1
@@ -60,7 +60,7 @@ namespace CmsWeb.Areas.Finance.Models.BatchImport
             return firstfund;
         }
 
-        public static BundleDetail AddContributionDetail(DateTime date, int fundid,
+        public static BundleDetail AddContributionDetail(DateTime date, string fundid,
             string amount, string checkno, string routing, string account)
         {
             var bd = NewBundleDetail(date, fundid, amount);
@@ -80,7 +80,7 @@ namespace CmsWeb.Areas.Finance.Models.BatchImport
             return bd;
         }
 
-        public static BundleDetail AddContributionDetail(DateTime date, int fundid,
+        public static BundleDetail AddContributionDetail(DateTime date, string fundid,
             string amount, string checkno, string routing, int peopleid)
         {
             var bd = NewBundleDetail(date, fundid, amount);
@@ -88,14 +88,14 @@ namespace CmsWeb.Areas.Finance.Models.BatchImport
             bd.Contribution.PeopleId = peopleid;
             return bd;
         }
-        public static BundleDetail AddContributionDetail(DateTime date, int fundid, string amount, int peopleid)
+        public static BundleDetail AddContributionDetail(DateTime date, string fundid, string amount, int peopleid)
         {
             var bd = NewBundleDetail(date, fundid, amount);
             bd.Contribution.PeopleId = peopleid;
             return bd;
         }
 
-        public static BundleDetail NewBundleDetail(DateTime date, int fundid, string amount)
+        public static BundleDetail NewBundleDetail(DateTime date, string fundid, string amount)
         {
             var bd = new BundleDetail
             {

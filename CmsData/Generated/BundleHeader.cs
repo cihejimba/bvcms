@@ -48,7 +48,7 @@ namespace CmsData
 		
 		private DateTime? _ModifiedDate;
 		
-		private int? _FundId;
+		private string _FundId;
 		
    		
    		private EntitySet< BundleDetail> _BundleDetails;
@@ -112,7 +112,7 @@ namespace CmsData
 		partial void OnModifiedDateChanging(DateTime? value);
 		partial void OnModifiedDateChanged();
 		
-		partial void OnFundIdChanging(int? value);
+		partial void OnFundIdChanging(string value);
 		partial void OnFundIdChanged();
 		
     #endregion
@@ -472,9 +472,9 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="FundId", UpdateCheck=UpdateCheck.Never, Storage="_FundId", DbType="int")]
+		[Column(Name="FundId", UpdateCheck=UpdateCheck.Never, Storage="_FundId", DbType="varchar(50)")]
 		[IsForeignKey]
-		public int? FundId
+		public string FundId
 		{
 			get { return this._FundId; }
 
@@ -546,7 +546,7 @@ namespace CmsData
 					else
 					{
 						
-						this._FundId = default(int?);
+						this._FundId = default(string);
 						
 					}
 

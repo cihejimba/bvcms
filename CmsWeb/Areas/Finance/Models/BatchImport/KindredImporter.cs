@@ -17,13 +17,13 @@ namespace CmsWeb.Areas.Finance.Models.BatchImport
 {
     internal class KindredImporter : IContributionBatchImporter
     {
-        public int? RunImport(string text, DateTime date, int? fundid, bool fromFile)
+        public int? RunImport(string text, DateTime date, string fundid, bool fromFile)
         {
             using (var csv = new CsvReader(new StringReader(text)))
                 return BatchProcessKindred(csv, date, fundid);
         }
 
-        private static int? BatchProcessKindred(CsvReader csv, DateTime date, int? fundid)
+        private static int? BatchProcessKindred(CsvReader csv, DateTime date, string fundid)
         {
             BundleHeader bh = null;
             var firstfund = BatchImportContributions.FirstFundId();

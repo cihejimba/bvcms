@@ -110,9 +110,9 @@ namespace CmsWeb.Areas.OnlineReg.Models
                 return new List<GivingConfirmation.FundItem>();
             var items = RetrieveEntireFundList ? EntireFundList() : AllFunds();
             var q = from i in FundItem
-                    join m in items on i.Key equals m.Value.ToInt()
+                    join m in items on i.Key equals m.Value
                     where i.Value.HasValue
-                    select new GivingConfirmation.FundItem() {Fundid = m.Value.ToInt(), Desc = m.Text, Amt = i.Value ?? 0};
+                    select new GivingConfirmation.FundItem() {Fundid = m.Value, Desc = m.Text, Amt = i.Value ?? 0};
             return q;
         }
 

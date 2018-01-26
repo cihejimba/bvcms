@@ -1493,7 +1493,7 @@ This search uses multiple steps which cannot be duplicated in a single query.
 
         public ContributionFund FetchOrCreateFund(string Description)
         {
-            return FetchOrCreateFund(0, Description);
+            return FetchOrCreateFund("", Description);
         }
         public EntryPoint FetchOrCreateEntryPoint(string type)
         {
@@ -1509,17 +1509,17 @@ This search uses multiple steps which cannot be duplicated in a single query.
             }
             return ep;
         }
-        public ContributionFund FetchOrCreateFund(int FundId, string Description, bool? NonTax = null)
+        public ContributionFund FetchOrCreateFund(string FundId, string Description, bool? NonTax = null)
         {
             ContributionFund fund;
-            if (FundId > 0)
+            if (FundId.HasValue())
                 fund = ContributionFunds.SingleOrDefault(f => f.FundId == FundId);
             else
                 fund = ContributionFunds.FirstOrDefault(f => f.FundName == Description && f.FundStatusId == 1);
             if (fund == null)
             {
-                int nextfundid;
-                if (FundId > 0)
+                string nextfundid;
+                if (FundId.HasValue())
                     nextfundid = FundId;
                 else
                     nextfundid = ContributionFunds.Max(ff => ff.FundId) + 1;

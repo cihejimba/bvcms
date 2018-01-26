@@ -14,11 +14,11 @@ namespace CmsWeb.Areas.Finance.Models.BatchImport
     {
         private BundleHeader _bundleHeader;
         private DateTime _batchDate;
-        private int _fundId;
+        private string _fundId;
 
         private readonly List<EntryDetail> _details = new List<EntryDetail>();
 
-        public int? RunImport(string text, DateTime date, int? fundid, bool fromFile)
+        public int? RunImport(string text, DateTime date, string fundid, bool fromFile)
         {
             _fundId = fundid ?? BatchImportContributions.FirstFundId();
 

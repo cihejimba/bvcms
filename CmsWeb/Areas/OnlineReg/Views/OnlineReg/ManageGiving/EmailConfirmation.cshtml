@@ -14,7 +14,7 @@
 @for (var n = 0; n < funds.Length; n++)
 {
     var i = funds[n];
-    var amt = Model.FundItemValue(UtilityExtensions.Util.ToInt(i.Value)) ?? 0;
+    var amt = Model.FundItemValue(i.Value) ?? 0;
     total += amt;
     if (amt > 0)
     {

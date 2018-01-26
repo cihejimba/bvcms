@@ -14,7 +14,7 @@ namespace CmsWeb.Areas.Finance.Controllers
     public class ContributionsController : CmsStaffController
     {
         [Route("~/Contributions/{id:int?}")]
-        public ActionResult Index(int? id, int? year, int? fundId, DateTime? dt1, DateTime? dt2, int? campus, int? bundletype, 
+        public ActionResult Index(int? id, int? year, string fundId, DateTime? dt1, DateTime? dt2, int? campus, int? bundletype, 
             bool? includeunclosedbundles = true, int online = 2, string taxnontax = "TaxDed")
         {
             var api = new ContributionSearchInfo()
@@ -34,7 +34,7 @@ namespace CmsWeb.Areas.Finance.Controllers
             return View(m);
         }
         [Route("~/BundleTotals")]
-        public ActionResult BundleTotals(int? fundId, DateTime? dt1, DateTime? dt2, int? campus, int? bundletype, 
+        public ActionResult BundleTotals(string fundId, DateTime? dt1, DateTime? dt2, int? campus, int? bundletype, 
             bool? includeunclosedbundles = true, int online = 2, string taxnontax = "TaxDed")
         {
             var api = new ContributionSearchInfo()

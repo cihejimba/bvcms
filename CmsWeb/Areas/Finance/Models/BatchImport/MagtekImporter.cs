@@ -16,7 +16,7 @@ namespace CmsWeb.Areas.Finance.Models.BatchImport
 {
     internal class MagtekImporter : IContributionBatchImporter
     {
-        public int? RunImport(string text, DateTime date, int? fundid, bool fromFile)
+        public int? RunImport(string text, DateTime date, string fundid, bool fromFile)
         {
             return BatchProcessMagTek(text, date);
         }
@@ -31,7 +31,7 @@ namespace CmsWeb.Areas.Finance.Models.BatchImport
                 ContributionDate = date,
                 CreatedBy = Util.UserId,
                 CreatedDate = now,
-                FundId = DbUtil.Db.Setting("DefaultFundId", "1").ToInt()
+                FundId = DbUtil.Db.Setting("DefaultFundId", "1")
             };
             DbUtil.Db.BundleHeaders.InsertOnSubmit(bh);
 

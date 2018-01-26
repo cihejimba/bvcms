@@ -10,14 +10,14 @@ namespace CmsWeb.Areas.Finance.Models.BatchImport
 {
     internal class SimpleGiveImporter : IContributionBatchImporter
     {
-        public int? RunImport(string text, DateTime date, int? fundid, bool fromFile)
+        public int? RunImport(string text, DateTime date, string fundid, bool fromFile)
         {
             using (var csv = new CsvReader(new StringReader(text) )
                     { Configuration = { Delimiter = "\t"} })
                 return Import(csv, date, fundid);
         }
 
-        private static int? Import(CsvReader csv, DateTime date, int? fundid)
+        private static int? Import(CsvReader csv, DateTime date, string fundid)
         {
             BundleHeader bundleHeader = null;
             var fid = fundid ?? BatchImportContributions.FirstFundId();
@@ -34,7 +34,7 @@ namespace CmsWeb.Areas.Finance.Models.BatchImport
                     continue;
 
                 var fund = csv[4];
-                int ffid = !fund.HasValue() ? fid : DbUtil.Db.FetchOrCreateFund(fund).FundId;
+                var ffid = !fund.HasValue() ? fid : DbUtil.Db.FetchOrCreateFund(fund).FundId;
 
                 var name = csv[5];
                 var address = csv[12];

@@ -546,7 +546,7 @@ namespace CmsWeb.Areas.OnlineReg.Models
         {
            return Parent.OnlineGiving()
                    && !Parent.AskDonation()
-                   && setting.DonationFundId.HasValue;
+                   && setting.DonationFundId.HasValue();
         }
 
         public static SelectListItem[] EntireFundList()

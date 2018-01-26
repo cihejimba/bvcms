@@ -27,7 +27,7 @@
                 @for (n = 0; n < funds.Length; n++)
                 {
                     var i = funds[n];
-                    var amt = Model.FundItemValue(i.Value.ToInt());
+                    var amt = Model.FundItemValue(i.Value);
                     if (amt.HasValue)
                     {
                         tot = (tot ?? 0) + amt;
@@ -76,7 +76,7 @@
                     @for (n = 0; n < specialFunds.Length; n++)
                     {
                         var i = specialFunds[n];
-                        var amt = Model.FundItemValue(i.Value.ToInt());
+                        var amt = Model.FundItemValue(i.Value);
                         if (amt.HasValue)
                         {
                             sn = sn + index;

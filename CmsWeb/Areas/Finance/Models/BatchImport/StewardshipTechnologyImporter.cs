@@ -18,7 +18,7 @@ namespace CmsWeb.Areas.Finance.Models.BatchImport
 {
     internal class StewardshipTechnologyImporter : IContributionBatchImporter
     {
-        public int? RunImport(string text, DateTime date, int? fundid, bool fromFile)
+        public int? RunImport(string text, DateTime date, string fundid, bool fromFile)
         {
             if (fromFile)
             {
@@ -30,7 +30,7 @@ namespace CmsWeb.Areas.Finance.Models.BatchImport
                 return BatchProcessStewardshipTechnology(csv, date, fundid);
         }
 
-        private static int? BatchProcessStewardshipTechnology(CsvReader csv, DateTime date, int? fundid)
+        private static int? BatchProcessStewardshipTechnology(CsvReader csv, DateTime date, string fundid)
         {
             var fundList = (from f in DbUtil.Db.ContributionFunds
                             select new
@@ -71,7 +71,7 @@ namespace CmsWeb.Areas.Finance.Models.BatchImport
                 var fid = (from f in fundList
                     where f.FundName == r.Type
                     select f.FundId).SingleOrDefault();
-                if (fid > 0)
+                if (fid.HasValue())
                     bd = BatchImportContributions.AddContributionDetail(r.Date ?? date, fid, r.Amount, r.CheckNo, "", r.Account);
                 else
                 {

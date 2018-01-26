@@ -16,13 +16,13 @@ namespace CmsWeb.Areas.Finance.Models.BatchImport
 {
     internal class EbcfamilyImporter : IContributionBatchImporter
     {
-        public int? RunImport(string text, DateTime date, int? fundid, bool fromFile)
+        public int? RunImport(string text, DateTime date, string fundid, bool fromFile)
         {
             using (var csv = new CsvReader(new StringReader(text), false))
                 return BatchProcessEbcfamily(csv, date, fundid);
         }
 
-        private static int? BatchProcessEbcfamily(CsvReader csv, DateTime date, int? fundid)
+        private static int? BatchProcessEbcfamily(CsvReader csv, DateTime date, string fundid)
         {
             BundleHeader bh = null;
             var firstfund = BatchImportContributions.FirstFundId();

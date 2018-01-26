@@ -16,12 +16,12 @@ namespace CmsWeb.Areas.Finance.Models.BatchImport
 {
     internal class BankOfNorthGeorgiaImporter : IContributionBatchImporter
     {
-        public int? RunImport(string text, DateTime date, int? fundid, bool fromFile)
+        public int? RunImport(string text, DateTime date, string fundid, bool fromFile)
         {
             return BatchProcessBankOfNorthGeorgia(text, date, fundid);
         }
 
-        private static int? BatchProcessBankOfNorthGeorgia(string text, DateTime date, int? fundid)
+        private static int? BatchProcessBankOfNorthGeorgia(string text, DateTime date, string fundid)
         {
             BundleHeader bh = null;
             var sr = new StringReader(text);

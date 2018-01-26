@@ -17,13 +17,13 @@ namespace CmsWeb.Areas.Finance.Models.BatchImport
 {
     internal class ServiceUImporter : IContributionBatchImporter
     {
-        public int? RunImport(string text, DateTime date, int? fundid, bool fromFile)
+        public int? RunImport(string text, DateTime date, string fundid, bool fromFile)
         {
             using (var csv = new CsvReader(new StringReader(text), true))
                 return Import(csv, date, fundid);
         }
 
-        private static int? Import(CsvReader csv, DateTime date, int? fundid)
+        private static int? Import(CsvReader csv, DateTime date, string fundid)
         {
             var cols = csv.GetFieldHeaders();
             var now = DateTime.Now;
@@ -85,7 +85,7 @@ namespace CmsWeb.Areas.Finance.Models.BatchImport
                     ed = new ExtraDatum {Data = person, Stamp = Util.Now};
                 }
                 BundleDetail bd = null;
-                var defaultfundid = DbUtil.Db.Setting("DefaultFundId", "1").ToInt();
+                var defaultfundid = DbUtil.Db.Setting("DefaultFundId", "1");
                 for (var c = 0; c < csv.FieldCount; c++)
                 {
                     var col = cols[c].Trim();
@@ -96,7 +96,7 @@ namespace CmsWeb.Areas.Finance.Models.BatchImport
                         bd.Contribution.ContributionAmount = csv[c].GetAmount();
                         if (col == "Other")
                             col = oth;
-                        if (!fundid.HasValue)
+                        if (!fundid.HasValue())
                             bd.Contribution.ContributionDesc = col;
                         if (ac.HasValue())
                             bd.Contribution.BankAccount = bankac;
@@ -119,7 +119,7 @@ namespace CmsWeb.Areas.Finance.Models.BatchImport
             DbUtil.Db.SubmitChanges();
         }
 
-        private static int? FindFund(string s)
+        private static string FindFund(string s)
         {
             var qf = from f in DbUtil.Db.ContributionFunds
                      where f.FundName == s
@@ -128,7 +128,7 @@ namespace CmsWeb.Areas.Finance.Models.BatchImport
             return fund?.FundId;
         }
 
-        private static BundleDetail CreateContribution(DateTime date, int fundid)
+        private static BundleDetail CreateContribution(DateTime date, string fundid)
         {
             var bd = new BundleDetail
             {

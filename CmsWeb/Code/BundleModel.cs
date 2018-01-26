@@ -43,7 +43,7 @@ namespace CmsWeb.Models
         public DateTime? DepositDate { get; set; }
         public decimal TotalBundle { get; set; }
         public decimal TotalItems { get; set; }
-        public int? FundId { get; set; }
+        public string FundId { get; set; }
         public string Fund { get; set; }
         public string Status { get; set; }
         public bool open { get; set; }
@@ -259,19 +259,19 @@ namespace CmsWeb.Models
         }
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public IEnumerable<ContributionInfo> FetchContributions(int startRowIndex, int maximumRows, string sortExpression,
-            int peopleId, int year, int statusid, int typeid, int fundid)
+            int peopleId, int year, int statusid, int typeid, string fundid)
         {
             var q = FetchContributions2(sortExpression, peopleId, year, statusid, typeid, fundid);
             return q.Skip(startRowIndex).Take(maximumRows);
         }
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public IEnumerable<ContributionInfo> FetchContributions(int year, int startRowIndex, int maximumRows, string sortExpression,
-            int statusid, int typeid, int fundid)
+            int statusid, int typeid, string fundid)
         {
             var q = FetchContributions2(sortExpression, 0, year, statusid, typeid, fundid);
             return q.Skip(startRowIndex).Take(maximumRows);
         }
-        private IQueryable<ContributionInfo> FetchContributions2(string sortExpression, int peopleId, int year, int statusid, int typeid, int fundid)
+        private IQueryable<ContributionInfo> FetchContributions2(string sortExpression, int peopleId, int year, int statusid, int typeid, string fundid)
         {
             var q = from c in DbUtil.Db.Contributions
                     select c;
@@ -297,7 +297,7 @@ namespace CmsWeb.Models
                      };
             return q2;
         }
-        private IQueryable<Contribution> ApplyWhere(IQueryable<Contribution> q, int peopleId, int year, int statusid, int typeid, int fundid)
+        private IQueryable<Contribution> ApplyWhere(IQueryable<Contribution> q, int peopleId, int year, int statusid, int typeid, string fundid)
         {
             if (peopleId != 0)
                 q = q.Where(c => c.PeopleId == peopleId);
@@ -307,11 +307,11 @@ namespace CmsWeb.Models
                 q = q.Where(c => c.ContributionStatusId == statusid);
             if (typeid != 0)
                 q = q.Where(c => c.ContributionTypeId == typeid);
-            if (fundid != 0)
+            if (fundid.HasValue())
                 q = q.Where(c => c.FundId == fundid);
             return q;
         }
-        public decimal Total(int peopleId, int year, int statusid, int typeid, int fundid)
+        public decimal Total(int peopleId, int year, int statusid, int typeid, string fundid)
         {
             var q = from c in DbUtil.Db.Contributions
                     where c.ContributionStatusId == ContributionStatusCode.Recorded
@@ -445,32 +445,6 @@ namespace CmsWeb.Models
             return list;
         }
         [DataObjectMethod(DataObjectMethodType.Select, false)]
-        public IEnumerable<CodeValueItem> Funds(int PeopleId)
-        {
-            var q = from c in DbUtil.Db.Contributions
-                    where c.PeopleId == PeopleId || PeopleId == 0
-                    group c by new { c.FundId, c.ContributionFund.FundName } into g
-                    orderby g.Key.FundName
-                    select new CodeValueItem
-                    {
-                        Id = g.Key.FundId,
-                        Value = g.Key.FundName
-                    };
-            return q;
-        }
-        public IEnumerable<CodeValueItem> OpenFunds()
-        {
-            var q = from c in DbUtil.Db.ContributionFunds
-                    where c.FundStatusId == 1
-                    orderby c.FundId
-                    select new CodeValueItem
-                    {
-                        Id = c.FundId,
-                        Value = c.FundName,
-                    };
-            return q;
-        }
-        [DataObjectMethod(DataObjectMethodType.Select, false)]
         public IEnumerable Years(int PeopleId)
         {
             var q = from c in DbUtil.Db.Contributions
@@ -601,14 +575,14 @@ namespace CmsWeb.Models
         }
         public RangeInfo RangeTotal;
         [DataObjectMethod(DataObjectMethodType.Select, false)]
-        public IEnumerable<RangeInfo> TotalsByFundRange(int fundid, DateTime dt1, DateTime dt2, bool Pledges, int CampusId)
+        public IEnumerable<RangeInfo> TotalsByFundRange(string fundid, DateTime dt1, DateTime dt2, bool Pledges, int CampusId)
         {
             dt2 = dt2.AddDays(1);
             var q0 = from c in DbUtil.Db.Contributions
                      where dt1 <= c.ContributionDate.Value.Date
                      where c.ContributionDate.Value.Date < dt2
                      where !ContributionTypeCode.ReturnedReversedTypes.Contains(c.ContributionTypeId)
-                     where c.FundId == fundid || fundid == 0
+                     where c.FundId == fundid || (fundid ?? "") == ""
                      where CampusId == 0 || c.CampusId == CampusId
                      select c;
 
@@ -765,7 +739,7 @@ namespace CmsWeb.Models
         }
         public JournalInfo JournalTotal;
         [DataObjectMethod(DataObjectMethodType.Select, false)]
-        public IEnumerable<JournalInfo> JournalDetails(DateTime dt1, DateTime dt2, int FundId)
+        public IEnumerable<JournalInfo> JournalDetails(DateTime dt1, DateTime dt2, string FundId)
         {
             var q = from c in DbUtil.Db.Contributions
                     where dt1 <= c.ContributionDate.Value.Date

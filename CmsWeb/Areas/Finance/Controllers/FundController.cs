@@ -62,9 +62,9 @@ namespace CmsWeb.Areas.Finance.Controllers
         [HttpPost]
         public ActionResult Create(string fundid)
         {
-            var id = fundid.ToInt();
-            if (id == 0)
-                return Json(new { error = "expected an integer (account number)" });
+            var id = fundid;
+            if (!id.HasValue())
+                return Json(new { error = "expected a value (account number)" });
             var f = DbUtil.Db.ContributionFunds.SingleOrDefault(ff => ff.FundId == id);
             if (f != null)
                 return Json(new { error = $"fund already exists: {f.FundName} ({fundid})" });
@@ -91,7 +91,7 @@ namespace CmsWeb.Areas.Finance.Controllers
             }
         }
 
-        public ActionResult Edit(int id)
+        public ActionResult Edit(string id)
         {
             var fund = DbUtil.Db.ContributionFunds.SingleOrDefault(f => f.FundId == id);
             if (fund == null)
@@ -99,7 +99,7 @@ namespace CmsWeb.Areas.Finance.Controllers
             return View(fund);
         }
 
-        public ActionResult Delete(int id)
+        public ActionResult Delete(string id)
         {
             var f = DbUtil.Db.ContributionFunds.SingleOrDefault(fu => fu.FundId == id);
             if (f != null)
@@ -109,7 +109,7 @@ namespace CmsWeb.Areas.Finance.Controllers
         }
 
         [HttpPost]
-        public ActionResult Update(int fundId)
+        public ActionResult Update(string fundId)
         {
             var fund = DbUtil.Db.ContributionFunds.SingleOrDefault(f => f.FundId == fundId);
             if (fund != null)
@@ -126,7 +126,7 @@ namespace CmsWeb.Areas.Finance.Controllers
         [HttpPost]
         public ContentResult EditOrder(string id, int? value)
         {
-            var iid = id.Substring(1).ToInt();
+            var iid = id.Substring(1);
             var fund = DbUtil.Db.ContributionFunds.SingleOrDefault(m => m.FundId == iid);
             fund.OnlineSort = value;
             DbUtil.Db.SubmitChanges();
@@ -136,7 +136,7 @@ namespace CmsWeb.Areas.Finance.Controllers
         [HttpPost]
         public ContentResult EditStatus(string id, int value)
         {
-            var iid = id.Substring(1).ToInt();
+            var iid = id.Substring(1);
             var fund = DbUtil.Db.ContributionFunds.SingleOrDefault(m => m.FundId == iid);
             fund.FundStatusId = value;
             DbUtil.Db.SubmitChanges();

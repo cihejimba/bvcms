@@ -16,12 +16,12 @@ namespace CmsWeb.Areas.Finance.Models.BatchImport
 {
     internal class FbcStark2Importer : IContributionBatchImporter
     {
-        public int? RunImport(string text, DateTime date, int? fundid, bool fromFile)
+        public int? RunImport(string text, DateTime date, string fundid, bool fromFile)
         {
             return BatchProcessFbcStark2(text, date, fundid);
         }
 
-        private static int? BatchProcessFbcStark2(string text, DateTime date, int? fundid)
+        private static int? BatchProcessFbcStark2(string text, DateTime date, string fundid)
         {
             var prevdt = DateTime.MinValue;
             BundleHeader bh = null;

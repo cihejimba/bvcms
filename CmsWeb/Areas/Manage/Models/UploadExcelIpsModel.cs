@@ -104,7 +104,7 @@ namespace CmsWeb.Models
                 foreach (var pledge in week)
                 {
                     var pid = GetPeopleId(pledge);
-                    var f = new ContributionFund{FundId = 0};
+                    var f = new ContributionFund{FundId = ""};
                     if (!Testing)
                     {
                         if (!pid.HasValue)
@@ -192,7 +192,7 @@ namespace CmsWeb.Models
                     if (!Testing)
                     {
                         var f = db.FetchOrCreateFund(gift.FundId, gift.FundName ?? gift.FundDescription);
-                        if (gift.FundId == 0)
+                        if (!gift.FundId.HasValue())
                             gift.FundId = f.FundId;
                     }
                     var bd = new BundleDetail();
@@ -251,7 +251,7 @@ namespace CmsWeb.Models
                     IndividualId = ws.Cells[r, Names["IndividualId"]].Value,
                     Amount = GetDecimal(ws.Cells[r, Names["Amount"]].Value),
                     Date = GetDate(ws.Cells[r, Names["Date"]].Value) ?? DateTime.MinValue,
-                    FundId = GetInt(ws.Cells[r, Names["FundId"]].Value) ?? 0,
+                    FundId = GetString(ws.Cells[r, Names["FundId"]].Value) ?? "",
                     FundDescription = GetString(ws.Cells[r, Names["FundDescription"]].Value),
                     FundName = GetString(ws.Cells[r, Names["FundName"]].Value),
                 };
@@ -280,7 +280,7 @@ namespace CmsWeb.Models
                     IndividualId = ws.Cells[r, Names["IndividualId"]].Value,
                     Amount = GetDecimal(ws.Cells[r, Names["PledgeAmount"]].Value),
                     Date = GetDate(ws.Cells[r, Names["PledgeDate"]].Value) ?? DateTime.MinValue,
-                    FundId = GetInt(ws.Cells[r, Names["FundId"]].Value) ?? 0,
+                    FundId = GetString(ws.Cells[r, Names["FundId"]].Value) ?? "",
                     FundName = GetString(ws.Cells[r, Names["FundName"]].Value),
                     FundDescription = GetString(ws.Cells[r, Names["FundDescription"]].Value),
                 };
@@ -334,7 +334,7 @@ DBCC CHECKIDENT ('[BundleDetail]', RESEED, 0)
         public decimal Amount { get; set; }
         public DateTime Date { get; set; }
         public string FundName { get; set; }
-        public int FundId { get; set; }
+        public string FundId { get; set; }
         public string FundDescription { get; set; }
         public string CheckNo { get; set; }
     }

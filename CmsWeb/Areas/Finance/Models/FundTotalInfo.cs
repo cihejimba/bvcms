@@ -2,7 +2,7 @@ namespace CmsWeb.Models
 {
     public class FundTotalInfo
     {
-        public int? FundId { get; set; }
+        public string FundId { get; set; }
         public int QBSynced { get; set; }
         public int OnLine { get; set; }
         public string BundleType { get; set; }

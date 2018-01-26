@@ -82,7 +82,7 @@ namespace CmsData.Registration
                         OtherFeesAddedToOrgFee = e.Element("OtherFeesAddedToOrgFee")?.Value.ToBool2() ?? false;
                         AskDonation = e.Element("AskDonation")?.Value.ToBool2() ?? false;
                         DonationLabel = e.Element("DonationLabel")?.Value;
-                        DonationFundId = e.Element("DonationFundId")?.Value.ToInt2();
+                        DonationFundId = e.Element("DonationFundId")?.Value;
                         break;
                     case "AgeGroups":
                         if (AgeGroups == null)

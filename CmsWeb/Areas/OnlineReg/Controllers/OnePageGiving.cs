@@ -81,7 +81,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 
 
         [HttpPost, Route("~/OnePageGiving")]
-        public ActionResult OnePageGiving(PaymentForm pf, Dictionary<int, decimal?> fundItem)
+        public ActionResult OnePageGiving(PaymentForm pf, Dictionary<string, decimal?> fundItem)
         {
             // need save off the original amt to pay if there is an error later on.
             var amtToPay = pf.AmtToPay;
@@ -111,8 +111,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             // first re-build list of fund items with only ones that contain a value (amt).
             var fundItems = fundItem.Where(f => f.Value.GetValueOrDefault() > 0).ToDictionary(f => f.Key, f=> f.Value);
             
-            var designatedFund = m.settings[id.Value].DonationFundId ?? 0;
-            if (designatedFund != 0)
+            var designatedFund = m.settings[id.Value].DonationFundId;
+            if (!designatedFund.HasValue())
                 fundItems.Add(designatedFund, pf.AmtToPay);
 
             // set the fund items on online reg person if there are any.

@@ -10,13 +10,13 @@ namespace CmsWeb.Areas.Finance.Models.BatchImport
 {
     internal class SubSplashImporter : IContributionBatchImporter
     {
-        public int? RunImport(string text, DateTime date, int? fundid, bool fromFile)
+        public int? RunImport(string text, DateTime date, string fundid, bool fromFile)
         {
             using (var csv = new CsvReader(new StringReader(text)))
                 return Import(csv, date, fundid);
         }
 
-        private static int? Import(CsvReader csv, DateTime date, int? fundid)
+        private static int? Import(CsvReader csv, DateTime date, string fundid)
         {
             BundleHeader bundleHeader = null;
             var fid = fundid ?? BatchImportContributions.FirstFundId();

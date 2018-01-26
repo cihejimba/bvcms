@@ -238,7 +238,7 @@ namespace CmsWeb.Areas.OnlineReg.Models
         {
             return OnlineGiving()
                    && !AskDonation()
-                   && settings.Any(vv => vv.Value.DonationFundId > 0);
+                   && settings.Any(vv => vv.Value.DonationFundId.HasValue());
         }
 
         public bool NoCreditCardsAllowed()

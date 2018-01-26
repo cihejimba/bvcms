@@ -18,13 +18,13 @@ namespace CmsWeb.Areas.Finance.Models.BatchImport
 {
     internal class SunTrustImporter : IContributionBatchImporter
     {
-        public int? RunImport(string text, DateTime date, int? fundid, bool fromFile)
+        public int? RunImport(string text, DateTime date, string fundid, bool fromFile)
         {
             using (var csv = new CsvReader(new StringReader(text), true))
                 return BatchProcessSunTrust(csv, date, fundid);
         }
 
-        private static int? BatchProcessSunTrust(CsvReader csv, DateTime date, int? fundid)
+        private static int? BatchProcessSunTrust(CsvReader csv, DateTime date, string fundid)
         {
             var prevbundle = -1;
             var curbundle = 0;

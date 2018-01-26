@@ -34,7 +34,7 @@ namespace CmsWeb.Areas.Finance.Controllers
                 CreatedBy = Util.UserId1,
                 CreatedDate = Util.Now,
                 RecordStatus = false,
-                FundId = DbUtil.Db.Setting("DefaultFundId", "1").ToInt(), 
+                FundId = DbUtil.Db.Setting("DefaultFundId", "1") 
             };
             if (User.IsInRole("FinanceDataEntry"))
                 b.BundleStatusId = BundleStatusCode.OpenForDataEntry;

@@ -15,13 +15,13 @@ namespace CmsWeb.Areas.Finance.Models.BatchImport
 {
     internal class AbundantLifeImporter : IContributionBatchImporter
     {
-        public int? RunImport(string text, DateTime date, int? fundid, bool fromFile)
+        public int? RunImport(string text, DateTime date, string fundid, bool fromFile)
         {
             using (var csv = new CsvReader(new StringReader(text), hasHeaders:false))
                 return BatchProcessAbundantLife(csv, date, fundid);
         }
 
-        private static int? BatchProcessAbundantLife(CsvReader csv, DateTime date, int? fundid)
+        private static int? BatchProcessAbundantLife(CsvReader csv, DateTime date, string fundid)
         {
             BundleHeader bh = null;
             var fid = fundid ?? BatchImportContributions.FirstFundId();

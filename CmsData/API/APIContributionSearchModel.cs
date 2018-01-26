@@ -31,7 +31,7 @@ namespace CmsData.API
         public int? CampusId { get; set; }
         public int? PeopleId { get; set; }
         public int? Year { get; set; }
-        public int? FundId { get; set; }
+        public string FundId { get; set; }
         public bool IncludeUnclosedBundles { get; set; }
         public bool Mobile { get; set; }
         public int Online { get; set; }
@@ -287,7 +287,7 @@ namespace CmsData.API
                                 where c.ContributionDate.Value.Year == model.Year
                                 select c;
 
-            if (model.FundId.HasValue && model.FundId != 0)
+            if (model.FundId.HasValue())
                 contributions = from c in contributions
                                 where c.FundId == model.FundId
                                 select c;

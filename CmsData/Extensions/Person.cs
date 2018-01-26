@@ -1377,7 +1377,7 @@ UPDATE dbo.GoerSenderAmounts SET SupporterId = {1} WHERE SupporterId = {0}", Peo
             return pi;
         }
 
-        public Contribution PostUnattendedContribution(CMSDataContext db, decimal amt, int? fund, string description,
+        public Contribution PostUnattendedContribution(CMSDataContext db, decimal amt, string fund, string description,
                                                        bool pledge = false, int? typecode = null, int? tranid = null)
         {
             if (!typecode.HasValue)
@@ -1434,7 +1434,7 @@ UPDATE dbo.GoerSenderAmounts SET SupporterId = {1} WHERE SupporterId = {0}", Peo
                     CreatedBy = Util.UserId1,
                     ContributionDate = d,
                     CreatedDate = now,
-                    FundId = db.Setting("DefaultFundId", "1").ToInt(),
+                    FundId = db.Setting("DefaultFundId", "1"),
                     RecordStatus = false,
                     TotalCash = 0,
                     TotalChecks = 0,
@@ -1444,8 +1444,8 @@ UPDATE dbo.GoerSenderAmounts SET SupporterId = {1} WHERE SupporterId = {0}", Peo
                 db.BundleHeaders.InsertOnSubmit(bundle);
                 db.SubmitChanges();
             }
-            if (!fund.HasValue)
-                fund = db.Setting("DefaultFundId", "1").ToInt();
+            if (!fund.HasValue())
+                fund = db.Setting("DefaultFundId", "1");
             var fundtouse = (from f in db.ContributionFunds
                              where f.FundId == fund
                              select f).SingleOrDefault();
@@ -1481,7 +1481,7 @@ UPDATE dbo.GoerSenderAmounts SET SupporterId = {1} WHERE SupporterId = {0}", Peo
             {
                 CreatedBy = financeManagerId.Value,
                 CreatedDate = bd.CreatedDate,
-                FundId = fund.Value,
+                FundId = fund,
                 PeopleId = PeopleId,
                 ContributionDate = bd.CreatedDate,
                 ContributionAmount = amt,
@@ -1671,7 +1671,7 @@ UPDATE dbo.GoerSenderAmounts SET SupporterId = {1} WHERE SupporterId = {0}", Peo
         public void UpdatePosition(CMSDataContext db, int value)
         {
             this.UpdateValue("PositionInFamilyId", value);
-            LogChanges(db, Util.UserPeopleId.Value);
+            LogChanges(db, Util.UserPeopleId ?? 1);
             db.SubmitChanges();
         }
 
@@ -1681,7 +1681,7 @@ UPDATE dbo.GoerSenderAmounts SET SupporterId = {1} WHERE SupporterId = {0}", Peo
             if (campusid == 0)
                 campusid = null;
             this.UpdateValue("CampusId", campusid);
-            LogChanges(db, Util.UserPeopleId.Value);
+            LogChanges(db, Util.UserPeopleId ?? 1);
             db.SubmitChanges();
         }
 

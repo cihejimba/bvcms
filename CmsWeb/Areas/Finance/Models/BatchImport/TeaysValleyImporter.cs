@@ -16,13 +16,13 @@ namespace CmsWeb.Areas.Finance.Models.BatchImport
 {
     internal class TeaysValleyImporter : IContributionBatchImporter
     {
-        public int? RunImport(string text, DateTime date, int? fundid, bool fromFile)
+        public int? RunImport(string text, DateTime date, string fundid, bool fromFile)
         {
             using (var csv = new CsvReader(new StringReader(text), true))
                 return BatchProcessTeaysValley(csv, date, fundid);
         }
 
-        private static int? BatchProcessTeaysValley(CsvReader csv, DateTime date, int? fundid)
+        private static int? BatchProcessTeaysValley(CsvReader csv, DateTime date, string fundid)
         {
             var fundList = (from f in DbUtil.Db.ContributionFunds
                             orderby f.FundId
@@ -40,7 +40,7 @@ namespace CmsWeb.Areas.Finance.Models.BatchImport
                 if (!amount.HasValue() || !dt.HasValue)
                     continue;
 
-                var fid = csv[1].ToInt2() ?? fund;
+                var fid = Util.PickFirst(csv[1], fund);
                 var account = csv[3];
                 var checkno = csv[4];
 

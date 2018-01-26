@@ -16,12 +16,12 @@ namespace CmsWeb.Areas.Finance.Models.BatchImport
 {
     internal class OakbrookChurchImporter : IContributionBatchImporter
     {
-        public int? RunImport(string text, DateTime date, int? fundid, bool fromFile)
+        public int? RunImport(string text, DateTime date, string fundid, bool fromFile)
         {
             throw new NotImplementedException();
         }
 
-        private static int? BatchProcessOakbrookChurch(CsvReader csv, DateTime date, int? fundid)
+        private static int? BatchProcessOakbrookChurch(CsvReader csv, DateTime date, string fundid)
         {
             var cols = csv.GetFieldHeaders();
 

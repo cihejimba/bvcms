@@ -154,7 +154,7 @@ namespace CmsWeb.Areas.Manage.Models.BatchModel
                 rs.DonationLabel = s;
 
                 s = FindColumn("DonationFundId");
-                rs.DonationFundId = s.ToInt();
+                rs.DonationFundId = s;
 
                 o.UpdateRegSetting(rs);
                 DbUtil.Db.SubmitChanges();

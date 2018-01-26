@@ -115,11 +115,6 @@ namespace CmsWeb.Code
             return AllCampusesNo();
         }
 
-        public IEnumerable<CodeValueItem> FundList()
-        {
-            return Funds();
-        }
-
         public IEnumerable<CodeValueItem> Campus0List()
         {
             return AllCampuses0();

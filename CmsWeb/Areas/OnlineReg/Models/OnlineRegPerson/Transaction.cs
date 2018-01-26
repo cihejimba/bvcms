@@ -130,7 +130,7 @@ namespace CmsWeb.Areas.OnlineReg.Models
                 var f = AllFunds().SingleOrDefault(ff => ff.Text == setting.ExtraValueFeeName);
                 var evamt = person.GetExtra(setting.ExtraValueFeeName).ToDecimal();
                 if (f != null && evamt > 0)
-                    FundItem[f.Value.ToInt()] = evamt;
+                    FundItem[f.Value] = evamt;
             }
         }
         internal string GetOthersInTransaction(Transaction transaction)

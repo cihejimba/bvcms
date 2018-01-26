@@ -15,7 +15,7 @@ namespace CmsWeb.Areas.Finance.Models.BatchImport
 {
     internal class VancoImporter : IContributionBatchImporter
     {
-        public int? RunImport(string text, DateTime date, int? fundid, bool fromFile)
+        public int? RunImport(string text, DateTime date, string fundid, bool fromFile)
         {
             if (fromFile)
             {
@@ -27,7 +27,7 @@ namespace CmsWeb.Areas.Finance.Models.BatchImport
                 return BatchProcessVanco(csv, date, fundid);
         }
 
-        private static int? BatchProcessVanco(CsvReader csv, DateTime date, int? fundid)
+        private static int? BatchProcessVanco(CsvReader csv, DateTime date, string fundid)
         {
             var fundList = (from f in DbUtil.Db.ContributionFunds
                             orderby f.FundId
@@ -36,7 +36,7 @@ namespace CmsWeb.Areas.Finance.Models.BatchImport
             var cols = csv.GetFieldHeaders();
             BundleHeader bh = null;
             var firstfund = BatchImportContributions.FirstFundId();
-            var fund = fundid != null && fundList.Contains(fundid ?? 0) ? fundid ?? 0 : firstfund;
+            var fund = fundid != null && fundList.Contains(fundid ?? "") ? fundid : firstfund;
 
             while (csv.ReadNextRecord())
             {
@@ -45,17 +45,14 @@ namespace CmsWeb.Areas.Finance.Models.BatchImport
                 var account = csv[0];
                 var amount = csv[1];
                 var fundText = csv[3];
-                var fundNum = 0;
-
-                int.TryParse(fundText, out fundNum);
 
                 if (bh == null)
                     bh = BatchImportContributions.GetBundleHeader(date, DateTime.Now);
 
                 BundleDetail bd;
 
-                if (fundList.Contains(fundNum))
-                    bd = BatchImportContributions.AddContributionDetail(date, fundNum, amount, checkno, routing, account);
+                if (fundList.Contains(fundText))
+                    bd = BatchImportContributions.AddContributionDetail(date, fundText, amount, checkno, routing, account);
                 else
                 {
                     bd = BatchImportContributions.AddContributionDetail(date, fund, amount, checkno, routing, account);

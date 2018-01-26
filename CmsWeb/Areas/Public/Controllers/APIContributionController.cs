@@ -7,7 +7,7 @@ namespace CmsWeb.Areas.Public.Controllers
     public class APIContributionController : CmsController
     {
         [HttpPost]
-        public ActionResult PostContribution(int PeopleId, decimal Amount, string desc, int FundId, string date, int? contributiontype, string checkno)
+        public ActionResult PostContribution(int PeopleId, decimal Amount, string desc, string FundId, string date, int? contributiontype, string checkno)
         {
             var ret = AuthenticateDeveloper(addrole: "Finance");
             if (ret.StartsWith("!"))

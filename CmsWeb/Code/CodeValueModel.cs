@@ -385,21 +385,6 @@ namespace CmsWeb.Code
                    };
         }
 
-        public IEnumerable<CodeValueItem> Funds()
-        {
-            var q = from f in DbUtil.Db.ContributionFunds
-                    where f.FundStatusId == 1
-                    orderby f.FundId
-                    select new CodeValueItem
-                    {
-                        Id = f.FundId,
-                        Value = f.FundName
-                    };
-            var list = q.ToList();
-            list.Insert(0, new CodeValueItem { Id = 0, Value = "(not specified)" });
-            return list;
-        }
-
         public IEnumerable<CodeValueItem> GenderCodes()
         {
             return from ms in DbUtil.Db.Genders

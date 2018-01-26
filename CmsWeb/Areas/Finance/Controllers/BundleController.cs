@@ -61,7 +61,7 @@ namespace CmsWeb.Areas.Finance.Controllers
             if (m.Bundle.FundIdChanged && q.All(cc => cc.FundId == fid))
             {
                 foreach (var c in q)
-                    c.FundId = m.Bundle.FundId ?? 1;
+                    c.FundId = m.Bundle.FundId ?? "1";
             }
             var postingdt = Util.Now;
             if (m.Bundle.BundleStatusIdChanged && m.Bundle.BundleStatusId == BundleStatusCode.Closed)

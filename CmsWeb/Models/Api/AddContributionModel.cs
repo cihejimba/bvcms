@@ -18,7 +18,7 @@ namespace CmsWeb.Models.Api
         public decimal Amount;
         public string Notes;
         public string Source;
-        public int? Fundid;
+        public string Fundid;
 
         public Result Add(CMSDataContext db)
         {

@@ -74,14 +74,14 @@ namespace CmsWeb.Areas.OnlineReg.Models
         public string Zip { get; set; }
         public string Phone { get; set; }
 
-        private Dictionary<int, decimal?> _fundItem = new Dictionary<int, decimal?>();
-        public Dictionary<int, decimal?> FundItem
+        private Dictionary<string, decimal?> _fundItem = new Dictionary<string, decimal?>();
+        public Dictionary<string, decimal?> FundItem
         {
             get { return _fundItem; }
             set { _fundItem = value; }
         }
 
-        public decimal? FundItemValue(int n)
+        public decimal? FundItemValue(string n)
         {
             if (FundItem.ContainsKey(n))
                 return FundItem[n];
@@ -205,7 +205,7 @@ namespace CmsWeb.Areas.OnlineReg.Models
             EveryN = 1;
             var evamt = person.GetExtra(Setting.ExtraValueFeeName).ToDecimal();
             if (f != null && evamt > 0)
-                FundItem.Add(f.Value.ToInt(), evamt);
+                FundItem.Add(f.Value, evamt);
         }
 
         private void PopulateSetup(ManagedGiving rg)
@@ -489,7 +489,7 @@ namespace CmsWeb.Areas.OnlineReg.Models
         public class FundItemChosen
         {
             public string desc { get; set; }
-            public int fundid { get; set; }
+            public string fundid { get; set; }
             public decimal amt { get; set; }
         }
 
@@ -499,9 +499,9 @@ namespace CmsWeb.Areas.OnlineReg.Models
                 return new List<FundItemChosen>();
             var items = OnlineRegPersonModel.FullFundList();
             var q = from i in FundItem
-                    join m in items on i.Key equals m.Value.ToInt()
+                    join m in items on i.Key equals m.Value
                     where i.Value.HasValue
-                    select new FundItemChosen { fundid = m.Value.ToInt(), desc = m.Text, amt = i.Value.Value };
+                    select new FundItemChosen { fundid = m.Value, desc = m.Text, amt = i.Value.Value };
             return q;
         }
 

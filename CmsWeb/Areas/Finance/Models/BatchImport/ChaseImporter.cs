@@ -17,13 +17,13 @@ namespace CmsWeb.Areas.Finance.Models.BatchImport
 {
     internal class ChaseImporter : IContributionBatchImporter
     {
-        public int? RunImport(string text, DateTime date, int? fundid, bool fromFile)
+        public int? RunImport(string text, DateTime date, string fundid, bool fromFile)
         {
             using (var csv = new CsvReader(new StringReader(text), true))
                 return RunImport(csv, date, fundid);
         }
 
-        public static int? RunImport(CsvReader csv, DateTime date, int? fundid)
+        public static int? RunImport(CsvReader csv, DateTime date, string fundid)
         {
             var prevbundle = -1;
             var curbundle = 0;

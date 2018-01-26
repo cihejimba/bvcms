@@ -192,10 +192,10 @@ namespace CmsWeb.Areas.OnlineReg.Models
         private void ReadFundItem(XElement e)
         {
             if (FundItem == null)
-                FundItem = new Dictionary<int, decimal?>();
+                FundItem = new Dictionary<string, decimal?>();
             var fu = e.Attribute("fund");
             if (fu != null)
-                FundItem.Add(fu.Value.ToInt(), e.Value.ToDecimal());
+                FundItem.Add(fu.Value, e.Value.ToDecimal());
         }
     }
 }

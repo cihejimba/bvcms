@@ -136,7 +136,7 @@ namespace CmsWeb.Areas.Public.Controllers
 					CreatedBy = user.UserId,
 					ContributionDate = DateTime.Now,
 					CreatedDate = DateTime.Now,
-					FundId = DbUtil.Db.Setting( "DefaultFundId", "1" ).ToInt(),
+					FundId = DbUtil.Db.Setting( "DefaultFundId", "1" ),
 					RecordStatus = false,
 					TotalCash = 0,
 					TotalChecks = 0,
@@ -184,7 +184,7 @@ namespace CmsWeb.Areas.Public.Controllers
 					{
 						CreatedBy = user.UserId,
 						CreatedDate = detail.CreatedDate,
-						FundId = header.FundId ?? 0,
+						FundId = header.FundId,
 						PeopleId = FindPerson( entry.routing, entry.account ),
 						ContributionDate = header.ContributionDate,
 						ContributionAmount = decimal.Parse( entry.amount ),

@@ -14,22 +14,18 @@ namespace CmsData
             public Funds(object funds)
             {
                 var strFunds = funds.ToString();
-                Fundids = new List<int>();
-                ExFundIds = new List<int>();
+                Fundids = new List<string>();
+                ExFundIds = new List<string>();
                 if (strFunds.HasValue())
                 {
                     Fundids = (from f in strFunds.Split(',')
-                               let i = f.ToInt()
-                               where i > 0
-                               select i).ToList();
+                               select f).ToList();
                     ExFundIds = (from f in strFunds.Split(',')
-                                 let i = f.ToInt()
-                                 where i < 0
-                                 select -i).ToList();
+                                 select $"-{f}").ToList();
                 }
             }
-            public readonly List<int> Fundids;
-            public readonly List<int> ExFundIds;
+            public readonly List<string> Fundids;
+            public readonly List<string> ExFundIds;
         }
         public int ContributionCount(int days1, int days2, object funds)
         {

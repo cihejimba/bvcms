@@ -474,7 +474,7 @@ p { font-size: 11px; }
             public string Description { get; set; }
             public string Header { get; set; }
             public string Notice { get; set; }
-            public List<int> Funds { get; set; }
+            public List<string> Funds { get; set; }
         }
 
         public static StatementSpecification GetStatementSpecification(string name)
@@ -498,7 +498,7 @@ p { font-size: 11px; }
                     ? string.Concat(noticeele.Nodes().Select(x => x.ToString()).ToArray())
                     : standardnotice;
                 var funds = ele.Element("Funds")?.Value ?? "";
-                cs.Funds = new List<int>();
+                cs.Funds = new List<string>();
 
             	var re = new Regex(@"(?<range>\d*-\d*)|(?<id>\d[^,]*)");
                 var matchResult = re.Match(funds);
@@ -508,13 +508,17 @@ p { font-size: 11px; }
 	                if (range.HasValue())
 	                {
 	                    var a = range.Split('-');
-                        for(var i = a[0].ToInt();i<a[1].ToInt();i++)
-                            if(allfunds.Contains(i))
-                                cs.Funds.Add(i);
+	                    var str1 = a[0].trim();
+	                    var str2 = a[1].trim();
+	                    var matches = from f in allfunds
+	                                  where string.CompareOrdinal(f, str1) >= 0
+	                                  where string.CompareOrdinal(f, str2) <= 0
+	                                  select f;
+                        cs.Funds.AddRange(matches);
 	                }
             		var id = matchResult.Groups["id"].Value;
                     if(id.HasValue())
-                        cs.Funds.Add(id.ToInt());
+                        cs.Funds.Add(id.trim());
             		matchResult = matchResult.NextMatch();
             	} 
                 allfunds.RemoveAll(vv => cs.Funds.Contains(vv));

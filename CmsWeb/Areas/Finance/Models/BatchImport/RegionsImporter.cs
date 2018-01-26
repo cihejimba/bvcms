@@ -19,13 +19,13 @@ namespace CmsWeb.Areas.Finance.Models.BatchImport
 {
     internal class RegionsImporter : IContributionBatchImporter
     {
-        public int? RunImport(string text, DateTime date, int? fundid, bool fromFile)
+        public int? RunImport(string text, DateTime date, string fundid, bool fromFile)
         {
             using (var csv = new CsvReader(new StringReader(text), true))
                 return BatchProcessRegions(csv, date, fundid);
         }
 
-        private static int? BatchProcessRegions(CsvReader csv, DateTime date, int? fundid)
+        private static int? BatchProcessRegions(CsvReader csv, DateTime date, string fundid)
         {
             var prevbundle = -1;
             var curbundle = 0;

@@ -37,7 +37,7 @@ namespace CmsWeb.Models
         public string pid { get; set; }
         public decimal? amt { get; set; }
         public int? splitfrom { get; set; }
-        public int fund { get; set; }
+        public string fund { get; set; }
         public string PLNT { get; set; }
         public string notes { get; set; }
         public string checkno { get; set; }
@@ -454,7 +454,7 @@ namespace CmsWeb.Models
 
         public class FundTotal
         {
-            public int FundId { get; set; }
+            public string FundId { get; set; }
             public string Name { get; set; }
             public decimal? Total { get; set; }
         }
@@ -533,7 +533,7 @@ namespace CmsWeb.Models
             public string AmtDisplay => Amt.ToString2("N2");
 
             public string Fund { get; set; }
-            public int FundId { get; set; }
+            public string FundId { get; set; }
 
             public string FundDisplay => $"{FundId} - {Fund}";
 

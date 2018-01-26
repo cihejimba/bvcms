@@ -138,7 +138,7 @@ namespace CmsWeb.Areas.OnlineReg.Models
         public decimal? Suggestedfee { get; set; }
          
         public List<FamilyAttendInfo> FamilyAttend { get; set; }
-        public Dictionary<int, decimal?> FundItem { get; set; }
+        public Dictionary<string, decimal?> FundItem { get; set; }
         public Dictionary<string, string> SpecialTest { get; set; }
         public List<Dictionary<string, string>> ExtraQuestion { get; set; }
         public List<Dictionary<string, string>> Text { get; set; }
@@ -150,7 +150,7 @@ namespace CmsWeb.Areas.OnlineReg.Models
         public OnlineRegPersonModel()
         {
             YesNoQuestion = new Dictionary<string, bool?>();
-            FundItem = new Dictionary<int, decimal?>();
+            FundItem = new Dictionary<string, decimal?>();
             Parent = HttpContext.Current.Items["OnlineRegModel"] as OnlineRegModel;
         }
 
@@ -191,7 +191,7 @@ namespace CmsWeb.Areas.OnlineReg.Models
             return null;
         }
 
-        public decimal? FundItemValue(int n)
+        public decimal? FundItemValue(string n)
         {
             if (FundItem.ContainsKey(n))
                 return FundItem[n];

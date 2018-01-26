@@ -291,20 +291,20 @@ namespace CmsWeb.Models
                 return null;
             if (!SearchInfo.Name.HasValue())
                 return null;
-            if (SearchInfo.FundId == 0)
+            if (!SearchInfo.FundId.HasValue())
                 return null;
             var re = new Regex(@"move to fundid (\d+)");
             var match = re.Match(SearchInfo.Name);
             if (!match.Success)
                 return null;
 
-            var newfundid = match.Groups[1].Value.ToInt2();
-            if (!(newfundid > 0))
+            var newfundid = match.Groups[1].Value;
+            if (!newfundid.HasValue())
                 return null;
 
             var oldfund = DbUtil.Db.ContributionFunds.Single(ff => ff.FundId == SearchInfo.FundId);
             var newfund = DbUtil.Db.ContributionFunds.SingleOrDefault(ff => ff.FundId == newfundid) ??
-                          DbUtil.Db.FetchOrCreateFund(newfundid.Value, oldfund.FundDescription);
+                          DbUtil.Db.FetchOrCreateFund(newfundid, oldfund.FundDescription);
 
             SearchInfo.Name = null;
             var q = api.FetchContributions();

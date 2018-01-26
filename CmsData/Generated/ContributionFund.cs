@@ -18,7 +18,7 @@ namespace CmsData
 		
 	#region Private Fields
 		
-		private int _FundId;
+		private string _FundId;
 		
 		private int _CreatedBy;
 		
@@ -56,6 +56,8 @@ namespace CmsData
 		
 		private int _QBAssetAccount;
 		
+		private string _FundNumber;
+		
    		
    		private EntitySet< BundleHeader> _BundleHeaders;
 		
@@ -71,7 +73,7 @@ namespace CmsData
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
 		
-		partial void OnFundIdChanging(int value);
+		partial void OnFundIdChanging(string value);
 		partial void OnFundIdChanged();
 		
 		partial void OnCreatedByChanging(int value);
@@ -128,6 +130,9 @@ namespace CmsData
 		partial void OnQBAssetAccountChanging(int value);
 		partial void OnQBAssetAccountChanged();
 		
+		partial void OnFundNumberChanging(string value);
+		partial void OnFundNumberChanged();
+		
     #endregion
 		public ContributionFund()
 		{
@@ -145,8 +150,8 @@ namespace CmsData
 		
     #region Columns
 		
-		[Column(Name="FundId", UpdateCheck=UpdateCheck.Never, Storage="_FundId", DbType="int NOT NULL", IsPrimaryKey=true)]
-		public int FundId
+		[Column(Name="FundId", UpdateCheck=UpdateCheck.Never, Storage="_FundId", DbType="varchar(50) NOT NULL", IsPrimaryKey=true)]
+		public string FundId
 		{
 			get { return this._FundId; }
 
@@ -556,6 +561,28 @@ namespace CmsData
 					this._QBAssetAccount = value;
 					this.SendPropertyChanged("QBAssetAccount");
 					this.OnQBAssetAccountChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="FundNumber", UpdateCheck=UpdateCheck.Never, Storage="_FundNumber", DbType="varchar(50)")]
+		public string FundNumber
+		{
+			get { return this._FundNumber; }
+
+			set
+			{
+				if (this._FundNumber != value)
+				{
+				
+                    this.OnFundNumberChanging(value);
+					this.SendPropertyChanging();
+					this._FundNumber = value;
+					this.SendPropertyChanged("FundNumber");
+					this.OnFundNumberChanged();
 				}
 
 			}

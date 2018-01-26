@@ -27,7 +27,7 @@ namespace CmsWeb.Areas.Finance.Controllers
                 return Message("Bundle Closed");
             if (User.IsInRole("FinanceDataEntry") && m.Bundle.BundleStatusId != BundleStatusCode.OpenForDataEntry)
                 return Message("Bundle is no longer open for data entry");
-            m.fund = m.Bundle.FundId ?? 1;
+            m.fund = m.Bundle.FundId ?? "1";
             return View(m);
         }
 
@@ -117,7 +117,7 @@ namespace CmsWeb.Areas.Finance.Controllers
         }
 
         [HttpPost]
-        public ActionResult BatchUpload(DateTime? date, HttpPostedFileBase file, int? fundid, string text)
+        public ActionResult BatchUpload(DateTime? date, HttpPostedFileBase file, string fundid, string text)
         {
             if(!date.HasValue)
             {
@@ -190,7 +190,7 @@ namespace CmsWeb.Areas.Finance.Controllers
                         DbUtil.Db.SubmitChanges();
                         return Json(m.ContributionRowData(this, iid));
                     case "f":
-                        c.FundId = value.ToInt();
+                        c.FundId = value;
                         DbUtil.Db.SubmitChanges();
                         return Content($"{c.ContributionFund.FundId} - {c.ContributionFund.FundName}");
                     case "k":

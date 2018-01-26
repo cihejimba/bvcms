@@ -15,13 +15,13 @@ namespace CmsWeb.Areas.Finance.Models.BatchImport
 {
     internal class Vanco2Importer : IContributionBatchImporter
     {
-        public int? RunImport(string text, DateTime date, int? fundid, bool fromFile)
+        public int? RunImport(string text, DateTime date, string fundid, bool fromFile)
         {
             using (var csv = new CsvReader(new StringReader(text), true, '\t'))
                 return BatchProcessVanco2(csv, date, fundid);
         }
 
-        private static int? BatchProcessVanco2(CsvReader csv, DateTime date, int? fundid)
+        private static int? BatchProcessVanco2(CsvReader csv, DateTime date, string fundid)
         {
             var fundList = (from f in DbUtil.Db.ContributionFunds
                             orderby f.FundId
@@ -30,7 +30,7 @@ namespace CmsWeb.Areas.Finance.Models.BatchImport
             var cols = csv.GetFieldHeaders();
             BundleHeader bh = null;
             var firstfund = BatchImportContributions.FirstFundId();
-            var fund = fundid != null && fundList.Contains(fundid ?? 0) ? fundid ?? 0 : firstfund;
+            var fund = fundid != null && fundList.Contains(fundid) ? fundid : firstfund;
 
             while (csv.ReadNextRecord())
             {

@@ -16,12 +16,12 @@ namespace CmsWeb.Areas.Finance.Models.BatchImport
 {
     internal class DiscoverCrossPointImporter : IContributionBatchImporter
     {
-        public int? RunImport(string text, DateTime date, int? fundid, bool fromFile)
+        public int? RunImport(string text, DateTime date, string fundid, bool fromFile)
         {
             return BatchProcessDiscoverCrosspoint(text, date, fundid);
         }
 
-        private static int? BatchProcessDiscoverCrosspoint(string text, DateTime date, int? fundid)
+        private static int? BatchProcessDiscoverCrosspoint(string text, DateTime date, string fundid)
         {
             var prevdt = DateTime.MinValue;
             BundleHeader bh = null;

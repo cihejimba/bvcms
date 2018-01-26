@@ -14,13 +14,13 @@ namespace CmsWeb.Areas.Finance.Models.BatchImport
 {
     internal class FbcFayettevilleImporter : IContributionBatchImporter
     {
-        public int? RunImport(string text, DateTime date, int? fundid, bool fromFile)
+        public int? RunImport(string text, DateTime date, string fundid, bool fromFile)
         {
             using (var csv = new CsvReader(new StringReader(text), true))
                 return BatchProcessFbcFayetteville(csv, date, fundid);
         }
 
-        private static int? BatchProcessFbcFayetteville(CsvReader csv, DateTime date, int? fundid)
+        private static int? BatchProcessFbcFayetteville(CsvReader csv, DateTime date, string fundid)
         {
             var cols = csv.GetFieldHeaders();
             BundleHeader bh = null;

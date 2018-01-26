@@ -2265,12 +2265,6 @@ namespace CmsData
 
 	    }
 
-	    public Table< View.RogueIp> ViewRogueIps
-	    {
-		    get { return this.GetTable< View.RogueIp>(); }
-
-	    }
-
 	    public Table< View.SearchNoDiacritic> ViewSearchNoDiacritics
 	    {
 		    get { return this.GetTable< View.SearchNoDiacritic>(); }
@@ -2418,6 +2412,12 @@ namespace CmsData
 	    public Table< View.XpFamily> ViewXpFamilies
 	    {
 		    get { return this.GetTable< View.XpFamily>(); }
+
+	    }
+
+	    public Table< View.XpFamilyExtra> ViewXpFamilyExtras
+	    {
+		    get { return this.GetTable< View.XpFamilyExtra>(); }
 
 	    }
 
