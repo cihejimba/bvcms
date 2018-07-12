@@ -27,9 +27,12 @@ namespace CmsData
 		private int? _AttendanceTypeId;
 		
 		private bool? _Hardwired;
-		
-   		
-   		private EntitySet< Attend> _Attends;
+
+	    private bool _Pending;
+
+	    private bool _Inactive;
+
+        private EntitySet< Attend> _Attends;
 		
    		private EntitySet< EnrollmentTransaction> _EnrollmentTransactions;
 		
@@ -59,9 +62,15 @@ namespace CmsData
 		
 		partial void OnHardwiredChanging(bool? value);
 		partial void OnHardwiredChanged();
-		
-    #endregion
-		public MemberType()
+
+	    partial void OnPendingChanging(bool value);
+	    partial void OnPendingChanged();
+
+	    partial void OnInactiveChanging(bool value);
+	    partial void OnInactiveChanged();
+
+        #endregion
+        public MemberType()
 		{
 			
 			this._Attends = new EntitySet< Attend>(new Action< Attend>(this.attach_Attends), new Action< Attend>(this.detach_Attends)); 
@@ -192,12 +201,56 @@ namespace CmsData
 
 		}
 
-		
-    #endregion
-        
-    #region Foreign Key Tables
-   		
-   		[Association(Name="FK_Attend_MemberType", Storage="_Attends", OtherKey="MemberTypeId")]
+
+	    [Column(Name = "Pending", UpdateCheck = UpdateCheck.Never, Storage = "_Pending", DbType = "bit NOT NULL")]
+	    public bool Pending
+	    {
+	        get { return this._Pending; }
+
+	        set
+	        {
+	            if (this._Pending != value)
+	            {
+
+	                this.OnPendingChanging(value);
+	                this.SendPropertyChanging();
+	                this._Pending = value;
+	                this.SendPropertyChanged("Pending");
+	                this.OnPendingChanged();
+	            }
+
+	        }
+
+	    }
+
+
+	    [Column(Name = "Inactive", UpdateCheck = UpdateCheck.Never, Storage = "_Inactive", DbType = "bit NOT NULL")]
+	    public bool Inactive
+	    {
+	        get { return this._Inactive; }
+
+	        set
+	        {
+	            if (this._Inactive != value)
+	            {
+
+	                this.OnInactiveChanging(value);
+	                this.SendPropertyChanging();
+	                this._Inactive = value;
+	                this.SendPropertyChanged("Inactive");
+	                this.OnInactiveChanged();
+	            }
+
+	        }
+
+	    }
+
+
+        #endregion
+
+        #region Foreign Key Tables
+
+        [Association(Name="FK_Attend_MemberType", Storage="_Attends", OtherKey="MemberTypeId")]
    		public EntitySet< Attend> Attends
    		{
    		    get { return this._Attends; }

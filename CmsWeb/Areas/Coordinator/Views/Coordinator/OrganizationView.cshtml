@@ -1,0 +1,26 @@
+﻿@model CmsWeb.Areas.Coordinator.Models.OrgViewModel
+@{
+    Layout = null;
+}
+
+@foreach (var org in Model.Orglist)
+{
+    <a class="navbar-link" style="text-decoration: none" id="@org.Id" myval="@org.Id" href="#">
+            <div style="border-bottom: 2px solid darkgray; min-height: 120px; padding:5px">
+                <h5 style="margin: 0; color:black"><b>@org.OrgName</b></h5>
+                <div style="display: flex; justify-content: flex-end;"><div><div class="circle">@org.Capacity</div></div></div>
+            </div>
+    </a>
+}
+<script type="text/javascript">
+    $(function () {
+        $('.navbar-link').on('click',function (e) {
+            e.preventDefault();
+            $('.highlighted').removeClass('highlighted');
+            $(this).children('div').addClass('highlighted');
+            var selectedValues = $(this).attr('myval');
+            $("#DetailsContainer").load('/Coordinator/Coordinator/Index', { id: selectedValues }); 
+        });
+    });
+</script>
+

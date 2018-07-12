@@ -31,10 +31,10 @@ namespace CmsData
 		private DateTime? _MeetingTime;
 		
 		private int? _AttendCreditId;
-		
-   		
-    	
-		private EntityRef< Organization> _Organization;
+
+	    private DateTime? _NextMeetingDate;
+
+        private EntityRef< Organization> _Organization;
 		
 	#endregion
 	
@@ -63,9 +63,12 @@ namespace CmsData
 		
 		partial void OnAttendCreditIdChanging(int? value);
 		partial void OnAttendCreditIdChanged();
-		
-    #endregion
-		public OrgSchedule()
+
+	    partial void OnNextMeetingDateChanging(DateTime? value);
+	    partial void OnNextMeetingDateChanged();
+
+        #endregion
+        public OrgSchedule()
 		{
 			
 			
@@ -234,16 +237,37 @@ namespace CmsData
 
 		}
 
-		
-    #endregion
-        
-    #region Foreign Key Tables
-   		
-	#endregion
-	
-	#region Foreign Keys
-    	
-		[Association(Name="FK_OrgSchedule_Organizations", Storage="_Organization", ThisKey="OrganizationId", IsForeignKey=true)]
+	    [Column(Name = "NextMeetingDate", UpdateCheck = UpdateCheck.Never, Storage = "_NextMeetingDate", DbType = "datetime", IsDbGenerated = true)]
+	    public DateTime? NextMeetingDate
+	    {
+	        get { return this._NextMeetingDate; }
+
+	        set
+	        {
+	            if (this._NextMeetingDate != value)
+	            {
+
+	                this.OnNextMeetingDateChanging(value);
+	                this.SendPropertyChanging();
+	                this._NextMeetingDate = value;
+	                this.SendPropertyChanged("NextMeetingDate");
+	                this.OnNextMeetingDateChanged();
+	            }
+
+	        }
+
+	    }
+
+
+        #endregion
+
+        #region Foreign Key Tables
+
+        #endregion
+
+        #region Foreign Keys
+
+        [Association(Name="FK_OrgSchedule_Organizations", Storage="_Organization", ThisKey="OrganizationId", IsForeignKey=true)]
 		public Organization Organization
 		{
 			get { return this._Organization.Entity; }

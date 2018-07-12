@@ -53,9 +53,15 @@ namespace CmsData
 		private bool? _NoShow;
 		
 		private bool? _EffAttendFlag;
-		
-   		
-   		private EntitySet< SubRequest> _SubRequests;
+
+	    private int _SubGroupID;
+
+	    private string _SubGroupName;
+
+	    private string _Pager;
+
+
+        private EntitySet< SubRequest> _SubRequests;
 		
     	
 		private EntityRef< MemberType> _MemberType;
@@ -128,9 +134,18 @@ namespace CmsData
 		
 		partial void OnEffAttendFlagChanging(bool? value);
 		partial void OnEffAttendFlagChanged();
-		
-    #endregion
-		public Attend()
+
+	    partial void OnSubGroupIDChanging(int value);
+	    partial void OnSubGroupIDChanged();
+
+	    partial void OnSubGroupNameChanging(string value);
+	    partial void OnSubGroupNameChanged();
+
+	    partial void OnPagerChanging(string value);
+	    partial void OnPagerChanged();
+
+        #endregion
+        public Attend()
 		{
 			
 			this._SubRequests = new EntitySet< SubRequest>(new Action< SubRequest>(this.attach_SubRequests), new Action< SubRequest>(this.detach_SubRequests)); 
@@ -567,12 +582,78 @@ namespace CmsData
 
 		}
 
-		
-    #endregion
-        
-    #region Foreign Key Tables
-   		
-   		[Association(Name="SubRequests__Attend", Storage="_SubRequests", OtherKey="AttendId")]
+
+	    [Column(Name = "SubGroupID", UpdateCheck = UpdateCheck.Never, Storage = "_SubGroupID", DbType = "int NOT NULL")]
+	    public int SubGroupID
+	    {
+	        get { return this._SubGroupID; }
+
+	        set
+	        {
+	            if (this._SubGroupID != value)
+	            {
+
+	                this.OnSubGroupIDChanging(value);
+	                this.SendPropertyChanging();
+	                this._SubGroupID = value;
+	                this.SendPropertyChanged("SubGroupID");
+	                this.OnSubGroupIDChanged();
+	            }
+
+	        }
+
+	    }
+
+
+	    [Column(Name = "SubGroupName", UpdateCheck = UpdateCheck.Never, Storage = "_SubGroupName", DbType = "nvarchar(200) NOT NULL")]
+	    public string SubGroupName
+	    {
+	        get { return this._SubGroupName; }
+
+	        set
+	        {
+	            if (this._SubGroupName != value)
+	            {
+
+	                this.OnSubGroupNameChanging(value);
+	                this.SendPropertyChanging();
+	                this._SubGroupName = value;
+	                this.SendPropertyChanged("SubGroupName");
+	                this.OnSubGroupNameChanged();
+	            }
+
+	        }
+
+	    }
+
+
+	    [Column(Name = "Pager", UpdateCheck = UpdateCheck.Never, Storage = "_Pager", DbType = "nvarchar(20) NOT NULL")]
+	    public string Pager
+	    {
+	        get { return this._Pager; }
+
+	        set
+	        {
+	            if (this._Pager != value)
+	            {
+
+	                this.OnPagerChanging(value);
+	                this.SendPropertyChanging();
+	                this._Pager = value;
+	                this.SendPropertyChanged("Pager");
+	                this.OnPagerChanged();
+	            }
+
+	        }
+
+	    }
+
+
+        #endregion
+
+        #region Foreign Key Tables
+
+        [Association(Name="SubRequests__Attend", Storage="_SubRequests", OtherKey="AttendId")]
    		public EntitySet< SubRequest> SubRequests
    		{
    		    get { return this._SubRequests; }

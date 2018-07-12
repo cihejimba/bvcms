@@ -382,6 +382,13 @@
     <Compile Include="App_Start\ApiAuthorizeAttribute.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Areas\Coordinator\Controllers\CoordinatorController.cs" />
+    <Compile Include="Areas\Coordinator\CoordinatorAreaRegistration.cs" />
+    <Compile Include="Areas\Coordinator\Models\DivViewModel.cs" />
+    <Compile Include="Areas\Coordinator\Models\OrgViewModel.cs" />
+    <Compile Include="Areas\Coordinator\Models\ProgDivOrgModel.cs" />
+    <Compile Include="Areas\Coordinator\Models\ProgViewModel.cs" />
+    <Compile Include="Areas\Coordinator\Models\SubgroupModel.cs" />
     <Compile Include="Areas\Dialog\Controllers\AddResourceController.cs" />
     <Compile Include="Areas\Dialog\Controllers\AddOrganizationController.cs" />
     <Compile Include="Areas\Dialog\Controllers\AddAttendeesFromTagController.cs" />
@@ -1666,7 +1673,16 @@
     <Content Include="Areas\Manage\Views\Volunteers\AltManageArea.cshtml" />
     <Content Include="Areas\Dialog\Views\MoveOrgMembers\Index.cshtml" />
     <Content Include="Areas\Dialog\Views\MoveOrgMembers\Process.cshtml" />
-    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <Content Include="Areas\Coordinator\Views\web.config" />
+    <Content Include="Areas\Coordinator\Views\Coordinator\Index.cshtml" />
+    <Content Include="Areas\Coordinator\Views\Coordinator\ProgDivOrg.cshtml" />
+    <Content Include="Areas\Coordinator\Views\Coordinator\ProgramView.cshtml" />
+    <Content Include="Areas\Coordinator\Views\Coordinator\DivisionView.cshtml" />
+    <Content Include="Areas\Coordinator\Views\Coordinator\OrganizationView.cshtml" />
+    <Content Include="Areas\Coordinator\Views\Coordinator\SubgroupDataView.cshtml" />
+    <Content Include="Areas\Coordinator\Views\Coordinator\MoveSubgroupView.cshtml" />
+    <Content Include="Areas\Coordinator\Views\Coordinator\SubgroupView.cshtml" />
+    <Content Include="Areas\Org\Views\Meeting\CheckInAttendance.cshtml" />
     <None Include="Properties\PublishProfiles\staging.pubxml" />
     <None Include="Properties\PublishProfiles\TeamCity.pubxml" />
     <None Include="Properties\PublishProfiles\work.pubxml" />
@@ -2607,6 +2623,7 @@
     <Content Include="Views\Script\TestBackground.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Script\RunScriptPageBreaks.cshtml" />
+    <Content Include="Views\Shared\_LayoutCheckIn.cshtml" />
     <None Include="Web.Impersonate.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -3202,6 +3219,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Areas\Coordinator\Views\Shared\" />
     <Folder Include="Areas\Dialog\Views\Shared\" />
     <Folder Include="Areas\Finance\Views\Shared\" />
     <Folder Include="Areas\Main\Views\Shared\" />
