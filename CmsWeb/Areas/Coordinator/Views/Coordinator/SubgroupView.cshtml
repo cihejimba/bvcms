@@ -4,7 +4,6 @@
     ViewBag.PageHeader = "Check-In Coordinator";
 }
 @model CmsWeb.Areas.Coordinator.Models.SubgroupModel
-@TempData["grpId"] = Model.groupid;
 @ViewExtensions2.jQuery()
 @ViewExtensions2.jQueryUI()
 <style>
@@ -87,7 +86,7 @@
             <div class="box-content">                
                 <input type="button" onclick="location.href='@Url.Action("ProgdivOrg", "Coordinator")'" class="btn btn-primary" value="Work With Different Organization" />
                 <div id="DetailsContainer" style="min-height: 900px !important">
-                    @Html.Action("Index2", new {id = Model.orgid, grpid = Model.groupid})
+                    @Html.Action("Index", new {id = Model.orgid})
                 </div>
             </div>
         </div>
