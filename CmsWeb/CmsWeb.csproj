@@ -1683,6 +1683,7 @@
     <Content Include="Areas\Coordinator\Views\Coordinator\MoveSubgroupView.cshtml" />
     <Content Include="Areas\Coordinator\Views\Coordinator\SubgroupView.cshtml" />
     <Content Include="Areas\Org\Views\Meeting\CheckInAttendance.cshtml" />
+    <Content Include="Areas\Finance\Views\FinanceReports\ChaiDonorsReport.cshtml" />
     <None Include="Properties\PublishProfiles\staging.pubxml" />
     <None Include="Properties\PublishProfiles\TeamCity.pubxml" />
     <None Include="Properties\PublishProfiles\work.pubxml" />
@@ -2445,7 +2446,7 @@
       <DependentUpon>Resource1.resx</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Resource1.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resource1.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>

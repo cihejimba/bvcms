@@ -152,6 +152,9 @@ namespace CmsData.API
 
         public IQueryable<Contribution> FetchContributions()
         {
+            // There is a SQL version of this search that should work the same way.
+            // it is called ContributionSearch
+
             if (contributions != null)
                 return contributions;
 
@@ -267,7 +270,11 @@ namespace CmsData.API
                                 where c.Person.Name.Contains(model.Name)
                                 select c;
 
-            if (model.Comments.HasValue())
+            if(model.Comments?.StartsWith("Meta:") == true)
+                contributions = from c in contributions
+                                where c.MetaInfo.StartsWith(model.Comments.Substring(5))
+                                select c;
+            else if (model.Comments.HasValue())
                 contributions = from c in contributions
                                 where c.ContributionDesc.Contains(model.Comments)
                                       || c.CheckNo == model.Comments
@@ -364,7 +371,7 @@ namespace CmsData.API
                 }
                 return standardFunds;
             }
-            var funds = xd.XPathSelectElement($"//Statement[@description='{name}']/Funds")?.Value ?? "";
+            var funds = xd.XPathSelectElement($"//Statement[@description=\"{name}\"]/Funds")?.Value ?? "";
             return GetFundSet(funds, allfunds);
         }
         public static List<int> GetCustomFundSetList(CMSDataContext db, string name)
@@ -372,7 +379,7 @@ namespace CmsData.API
             if (name == "all")
                 return null;
             var xd = XDocument.Parse(Util.PickFirst(db.ContentOfTypeText("CustomFundSets"), "<CustomFundSets/>"));
-            var funds = xd.XPathSelectElement($"//FundSet[@description='{name}']/Funds")?.Value ?? "";
+            var funds = xd.XPathSelectElement($"//FundSet[@description=\"{name}\"]/Funds")?.Value ?? "";
             if (!funds.HasValue())
                 return GetCustomStatementsList(db, name);
 

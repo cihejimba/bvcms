@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
@@ -1098,7 +1099,7 @@ UPDATE dbo.GoerSenderAmounts SET SupporterId = {1} WHERE SupporterId = {0}", Peo
             c.ChangeDetails.Add(new ChangeDetail("Picture", null, "(new upload)"));
             var np = db.GetNewPeopleManagers();
             if (np != null)
-                db.EmailRedacted(db.Setting("AdminMail", "support@touchpointsoftware.com"), np,
+                db.EmailRedacted(db.Setting("AdminMail", ConfigurationManager.AppSettings["supportemail"]), np,
                     "Picture Uploaded on " + Util.Host,
                     $"{Util.UserName} Uploaded a picture for <a href=\"{db.ServerLink($"/Person2/{PeopleId}")}\">{Name}</a><br />\n");
         }
@@ -1410,7 +1411,7 @@ UPDATE dbo.GoerSenderAmounts SET SupporterId = {1} WHERE SupporterId = {0}", Peo
         }
 
         public Contribution PostUnattendedContribution(CMSDataContext db, decimal amt, int? fund, string description,
-                                                       bool pledge = false, int? typecode = null, int? tranid = null)
+                                                       bool pledge = false, int? typecode = null, int? tranid = null, string meta = null)
         {
             if (!typecode.HasValue)
             {
@@ -1522,6 +1523,7 @@ UPDATE dbo.GoerSenderAmounts SET SupporterId = {1} WHERE SupporterId = {0}", Peo
                 ContributionDesc = description,
                 TranId = tranid,
                 Source = Util2.FromMobile.HasValue() ? 1 : (int?)null,
+                MetaInfo = meta,
                 //CampusId is set with an update Trigger when peopleid is changed or when a new contribution is created that has a peopleId
             };
             bundle.BundleDetails.Add(bd);

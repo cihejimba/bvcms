@@ -532,7 +532,7 @@
     <Compile Include="Email\ReplacementCodes\Replacements\SqlLookup.cs" />
     <Compile Include="Email\ReplacementCodes\Replacements\RecentGifts.cs" />
     <Compile Include="Email\ReplacementCodes\Replacements\DynamicData.cs" />
-    <Compile Include="Email\ReplacementCodes\Replacements\Image.cs" />
+    <Compile Include="Email\ReplacementCodes\Replacements\SettingUrl.cs" />
     <Compile Include="Email\ReplacementCodes\Replacements\StatementType.cs" />
     <Compile Include="Email\ReplacementCodes\Replacements\ExtraValue.cs" />
     <Compile Include="Email\ReplacementCodes\Links\RegisterLink.cs" />
@@ -697,6 +697,9 @@
     <Compile Include="Generated\Functions\GiftSummary.cs" />
     <Compile Include="Generated\Functions\GivingChange.cs" />
     <Compile Include="Generated\Functions\GivingChangeFund.cs" />
+    <Compile Include="Generated\Functions\GivingChangeFundQuarter.cs" />
+    <Compile Include="Generated\Functions\GivingChangeQuartersFund.cs" />
+    <Compile Include="Generated\Functions\GivingChangeQuartersFund2.cs" />
     <Compile Include="Generated\Functions\GuestList.cs" />
     <Compile Include="Generated\Functions\GuestList2.cs" />
     <Compile Include="Generated\Functions\HasIncompleteRegistration.cs" />
