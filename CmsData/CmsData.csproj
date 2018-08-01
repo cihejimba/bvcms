@@ -507,6 +507,7 @@
     <Compile Include="API\QueryFunctions\Attendance.cs" />
     <Compile Include="API\QueryFunctions\Contributions.cs" />
     <Compile Include="API\QueryFunctions\Query.cs" />
+    <Compile Include="Classes\DataMapper\DataMapper.cs" />
     <Compile Include="Classes\ExtraValues\Code.cs" />
     <Compile Include="Classes\ExtraValues\NewStandard.cs" />
     <Compile Include="Classes\GoogleCloudMessaging\GCMData.cs" />
@@ -659,6 +660,10 @@
     <Compile Include="Finance\TransNational\Vault\VaultResponse.cs" />
     <Compile Include="Generated\ApiSession.cs" />
     <Compile Include="Generated\ApiUserInfo.cs" />
+    <Compile Include="Generated\CheckInLabel.cs" />
+    <Compile Include="Generated\CheckInLabelEntry.cs" />
+    <Compile Include="Generated\CheckInLabelEntryAlignment.cs" />
+    <Compile Include="Generated\CheckInLabelType.cs" />
     <Compile Include="Generated\CheckInSetting.cs" />
     <Compile Include="Generated\ContactExtra.cs" />
     <Compile Include="Generated\CustomColumn.cs" />
@@ -670,6 +675,7 @@
     <Compile Include="Generated\Functions\AttendCommitment.cs" />
     <Compile Include="Generated\Functions\CheckinMatchBarCodeOnly.cs" />
     <Compile Include="Generated\Functions\ContributionSearch.cs" />
+    <Compile Include="Generated\Functions\ContributionSearch0.cs" />
     <Compile Include="Generated\Functions\CurrOrgMember.cs" />
     <Compile Include="Generated\Functions\CurrOrgMembers2.cs" />
     <Compile Include="Generated\Functions\Donor.cs" />
@@ -697,6 +703,8 @@
     <Compile Include="Generated\Functions\GiftSummary.cs" />
     <Compile Include="Generated\Functions\GivingChange.cs" />
     <Compile Include="Generated\Functions\GivingChangeFund.cs" />
+    <Compile Include="Generated\Functions\GivingChangeFundQuarter.cs" />
+    <Compile Include="Generated\Functions\GivingChangeQuartersFund.cs" />
     <Compile Include="Generated\Functions\GuestList.cs" />
     <Compile Include="Generated\Functions\GuestList2.cs" />
     <Compile Include="Generated\Functions\HasIncompleteRegistration.cs" />
@@ -1272,6 +1280,7 @@
       <SubType>Designer</SubType>
     </Resource>
     <Content Include="App_Readme\Elmah.txt" />
+    <Content Include="Migrations\20180801_CheckInUpdates.sql" />
     <Content Include="QueryBuilder\CompareMap.xml">
       <SubType>Designer</SubType>
     </Content>
