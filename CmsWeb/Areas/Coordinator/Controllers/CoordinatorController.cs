@@ -11,16 +11,77 @@ namespace CmsWeb.Areas.Coordinator.Controllers
 {
     public class CoordinatorController : Controller
     {
-        // GET: Coordinator/Coordinator
-        //[Route("Coordinator/Coordinator/Index/{id:int}")]
+        public static List<ProgModel> Programs;
+
+        public static ProgViewModel pvm = new ProgViewModel();
+        public static DivViewModel dvm = new DivViewModel();
+        public static OrgViewModel ovm = new OrgViewModel();
+
+        public ActionResult ProgdivOrg()
+        {
+            Progs();
+            return View();
+        }
+
+        public ActionResult DivisionView(int? progId)
+        {
+            dvm.Divlist.Clear();
+            if (progId != null)
+            {
+                ProgModel cd = Programs.Find(p => p.Id == progId);
+
+                foreach (DivModel spd in cd.DivList)
+                {
+                    dvm.Divlist.Add(spd);
+                }
+            }
+            return View(dvm);
+        }
+
+        public ActionResult ProgramView()
+        {
+            pvm.Proglist.Clear();
+
+            foreach (ProgModel pd in Programs)
+            {
+                pvm.Proglist.Add(pd);
+            }
+            return View(pvm);
+        }
+
+        public ActionResult OrganizationView(int? progId, int? divId)
+        {
+            ovm.Orglist.Clear();
+            if (progId != null) // && divId != null)
+            {
+
+                ProgModel cd = Programs.Find(p => p.Id == progId);
+                DivModel spd = cd.DivList.Find(p => p.Id == divId);
+                if (divId.IsNull())
+                {
+                    foreach (var x in cd.DivList)
+                    {
+                        foreach (OrgModel cpd in x.OrgList)
+                        {
+                            ovm.Orglist.Add(cpd);
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (OrgModel cpd in spd.OrgList)
+                    {
+                        ovm.Orglist.Add(cpd);
+                    }
+                }
+
+            }
+            return View(ovm);
+        }
+
         public ActionResult Index(int id)
         {
             var m = new SubgroupModel(id);
-            return View(m);
-        }
-
-        public ActionResult SubgroupView(SubgroupModel m)
-        {
             return View(m);
         }
 
@@ -29,6 +90,72 @@ namespace CmsWeb.Areas.Coordinator.Controllers
             var m = new SubgroupModel(id);
             m.ingroup = sg;
             m.groupid = grpid;
+            return View(m);
+        }
+
+        public static void Progs()
+        {
+            // TODO: limit selection to programs capable of self checkin 
+            List<ProgModel> pList = (from program in DbUtil.Db.Programs
+                                     join pd in DbUtil.Db.ProgDivs on program.Id equals pd.ProgId
+                                     join division in DbUtil.Db.Divisions on pd.DivId equals division.Id
+                                     join organization in DbUtil.Db.Organizations on division.Id equals organization.DivisionId
+                                     join mt in DbUtil.Db.MemberTags on organization.OrganizationId equals mt.OrgId
+                                     where organization.CanSelfCheckin == true
+                                     && mt.CheckIn == true
+                                     select new ProgModel
+                                     {
+                                         Id = program.Id,
+                                         ProgName = program.Name,
+                                         DivList = Divisions(program.Id)
+                                     }).Distinct().ToList();
+            Programs = pList;
+        }
+
+        public static List<DivModel> Divisions(int progId)
+        {
+            List<DivModel> divisionList = (from program in DbUtil.Db.Programs
+                                           join pd in DbUtil.Db.ProgDivs on program.Id equals pd.ProgId
+                                           join division in DbUtil.Db.Divisions on pd.DivId equals division.Id
+                                           join organization in DbUtil.Db.Organizations on division.Id equals organization.DivisionId
+                                           join mt in DbUtil.Db.MemberTags on organization.OrganizationId equals mt.OrgId
+                                           where organization.CanSelfCheckin == true
+                                           && mt.CheckIn == true
+                                           && program.Id == progId
+                                           select new DivModel
+                                           {
+                                               Id = division.Id,
+                                               DivName = division.Name,
+                                               OrgList = Organizations(division.Id)
+                                           }).Distinct().ToList();
+
+            return divisionList;
+        }
+
+        public static List<OrgModel> Organizations(int divId)
+        {
+            List<OrgModel> orgList = (from program in DbUtil.Db.Programs
+                                      join pd in DbUtil.Db.ProgDivs on program.Id equals pd.ProgId
+                                      join division in DbUtil.Db.Divisions on pd.DivId equals division.Id
+                                      join organization in DbUtil.Db.Organizations on division.Id equals organization.DivisionId
+                                      join mt in DbUtil.Db.MemberTags on organization.OrganizationId equals mt.OrgId
+                                      where organization.CanSelfCheckin == true
+                                      && mt.CheckIn == true
+                                      && division.Id == divId
+                                      select new OrgModel()
+                                      {
+                                          Id = organization.OrganizationId,
+                                          OrgName = organization.OrganizationName,
+                                          Capacity = organization.Limit ?? 0,
+                                          Attendance = organization.Attends.Count
+                                      }).Distinct().ToList();
+
+            return orgList;
+        }
+
+
+        public ActionResult SubgroupView(SubgroupModel m)
+        {
             return View(m);
         }
 
@@ -115,117 +242,6 @@ namespace CmsWeb.Areas.Coordinator.Controllers
             m.groupid = targrpid;
             m.ingroup = m.GetGroupDetails(targrpid).Name;
             return RedirectToAction("SubgroupView", m);
-        }
-
-        public ActionResult ProgdivOrg()
-        {
-            Progs();
-            return View();
-        }
-
-        public static List<ProgModel> Programs;
-
-        public static void Progs()
-        {
-            List<ProgModel> pList = (from f in DbUtil.Db.Programs
-                                     select new ProgModel
-                                     {
-                                         Id = f.Id,
-                                         ProgName = f.Name,
-                                         DivList = Divisions(f.Id)
-                                     }).ToList();
-            Programs = pList;
-        }
-
-        public static List<DivModel> Divisions(int progId)
-        {
-            List<DivModel> divisionList = (from f in DbUtil.Db.Divisions
-                                           where f.ProgId == progId
-                                           select new DivModel
-                                           {
-                                               Id = f.Id,
-                                               DivName = f.Name,
-                                               OrgList = Organizations(f.Id)
-                                           }).ToList();
-
-            return divisionList;
-        }
-
-        public static List<OrgModel> Organizations(int divId)
-        {
-            List<OrgModel> orgList = (from f in DbUtil.Db.Organizations
-                                      where f.DivisionId == divId
-                                      where f.CanSelfCheckin == true
-                                      select new OrgModel()
-                                      {
-                                          Id = f.OrganizationId,
-                                          OrgName = f.OrganizationName,
-                                          Capacity = f.Limit ?? 0,
-                                          Attendance = f.Attends.Count
-                                      }).ToList();
-
-            return orgList;
-        }
-
-        public static ProgViewModel pvm = new ProgViewModel();
-
-        public ActionResult ProgramView()
-        {
-            pvm.Proglist.Clear();
-
-            foreach (ProgModel pd in Programs)
-            {
-                pvm.Proglist.Add(pd);
-            }
-            return View(pvm);
-        }
-
-        public static DivViewModel dvm = new DivViewModel();
-
-        public ActionResult DivisionView(int? progId)
-        {
-            dvm.Divlist.Clear();
-            if (progId != null)
-            {
-                ProgModel cd = Programs.Find(p => p.Id == progId);
-
-                foreach (DivModel spd in cd.DivList)
-                {
-                    dvm.Divlist.Add(spd);
-                }
-            }
-            return View(dvm);
-        }
-
-        public static OrgViewModel ovm = new OrgViewModel();
-        public ActionResult OrganizationView(int? progId, int? divId)
-        {
-            ovm.Orglist.Clear();
-            if (progId != null) // && divId != null)
-            {
-
-                ProgModel cd = Programs.Find(p => p.Id == progId);
-                DivModel spd = cd.DivList.Find(p => p.Id == divId);
-                if (divId.IsNull())
-                {
-                    foreach (var x in cd.DivList)
-                    {
-                        foreach (OrgModel cpd in x.OrgList)
-                        {
-                            ovm.Orglist.Add(cpd);
-                        }
-                    }
-                }
-                else
-                {
-                    foreach (OrgModel cpd in spd.OrgList)
-                    {
-                        ovm.Orglist.Add(cpd);
-                    }
-                }
-
-            }
-            return View(ovm);
         }
     }
 
