@@ -101,7 +101,8 @@ namespace CmsWeb.Areas.Org.Controllers
                 group = new MemberTag
                 {
                     Name = m.GroupName,
-                    OrgId = m.orgid
+                    OrgId = m.orgid,
+                    CheckIn = m.AllowCheckin.Equals("true", System.StringComparison.OrdinalIgnoreCase)
                 };
                 Db.MemberTags.InsertOnSubmit(group);
                 Db.SubmitChanges();
