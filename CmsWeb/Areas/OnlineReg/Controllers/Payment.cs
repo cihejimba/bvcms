@@ -223,11 +223,15 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
         public ActionResult PayDueTest(string q)
         {
             if (!Util.HasValue(q))
+            {
                 return Message("unknown");
+            }
             var id = Util.Decrypt(q);
             var ed = DbUtil.Db.ExtraDatas.SingleOrDefault(e => e.Id == id.ToInt());
             if (ed == null)
+            {
                 return Message("no outstanding transaction");
+            }
             return Content(ed.Data);
         }
     }
