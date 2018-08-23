@@ -48,7 +48,7 @@ namespace DbGenerator.Commands
             queryBuilder.AppendLine(File.ReadAllText(imageDbManifestPath));
             queryBuilder.AppendLine("go");
 
-            var sqlText = queryBuilder.ToString();
+            var sqlText = queryBuilder.ToString().Replace("ro-CMS_StarterDb", $"ro-{cmsDatabaseName}");
 
             using (var connection = new SqlConnection(args.ConnectionString))
             {
