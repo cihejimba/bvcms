@@ -82,7 +82,6 @@
   <ItemGroup>
     <Compile Include="Args\CreateArgs.cs" />
     <Compile Include="Commands\CreateCommand.cs" />
-    <Compile Include="Models\CreateDatabaseResultsViewModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -108,6 +107,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
