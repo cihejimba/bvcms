@@ -1,0 +1,3 @@
+﻿﻿@model DbGenerator.Models.CreateDatabaseResultsViewModel
+
+The databases have been created successfully.

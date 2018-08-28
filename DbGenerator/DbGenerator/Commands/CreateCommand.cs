@@ -1,6 +1,5 @@
 ﻿using Consolas.Core;
 using DbGenerator.Args;
-using DbGenerator.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -48,11 +47,25 @@ namespace DbGenerator.Commands
             queryBuilder.AppendLine(File.ReadAllText(imageDbManifestPath));
             queryBuilder.AppendLine("go");
 
-            var sqlText = queryBuilder.ToString().Replace("ro-CMS_StarterDb", $"ro-{cmsDatabaseName}").Replace("p@ssw0rd", "Micah123");
+            var sqlText = queryBuilder.ToString().Replace("ro-CMS_StarterDb", $"ro-{cmsDatabaseName}").Replace("p@ssw0rd", args.ReadonlyPassword);
 
             using (var connection = new SqlConnection(args.ConnectionString))
             {
                 connection.Open();
+
+                var cmsDbExists = connection.CreateCommand();
+                cmsDbExists.CommandText = $"select count(*) as dbcount from sys.databases where name = '{cmsDatabaseName}'";
+                var cmsDbExistsResult = (int)cmsDbExists.ExecuteScalar();
+
+                var imageDbExists = connection.CreateCommand();
+                imageDbExists.CommandText = $"select count(*) as dbcount from sys.databases where name = '{imageDatabaseName}'";
+                var imageDbExistsResult = (int)imageDbExists.ExecuteScalar();
+
+                if (cmsDbExistsResult > 0 || imageDbExistsResult > 0)
+                {
+                    connection.Close();
+                    return View("DbAlreadyExistsResult"); // TODO: actually add something useful to the results display
+                }
 
                 foreach (var sqlBatch in sqlText.Split(new[] { "\r\nGO\r\n", "\r\ngo\r\n", "\r\nGo\r\n", "\r\ngO\r\n" }, StringSplitOptions.RemoveEmptyEntries))
                 {
@@ -67,7 +80,7 @@ namespace DbGenerator.Commands
                 connection.Close();
             }
 
-            return View("CreateResultsView", new CreateDatabaseResultsViewModel());
+            return View("DbCreatedResult");
         }
     }
 }

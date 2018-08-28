@@ -89,7 +89,10 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <EmbeddedResource Include="Views\CreateResultsView.cstxt">
+    <EmbeddedResource Include="Views\DbCreatedResult.cstxt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\DbAlreadyExistsResult.cstxt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <None Include="Views\Default.template" />
